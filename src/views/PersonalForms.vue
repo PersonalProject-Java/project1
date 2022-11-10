@@ -828,15 +828,6 @@ export default {
 
     async save() {
       if (this.editedIndex > -1) {
-        console.log(this.editedItem.floor)
-        if (this.editedItem.floor.name!==null){this.editedItem.floor = this.editedItem.floor.id}
-        if (this.editedItem.region!==null){this.editedItem.region = this.editedItem.region.id}
-        if (this.editedItem.district!==null){this.editedItem.district = this.editedItem.district.id}
-        if (this.editedItem.city!==null){this.editedItem.city = this.editedItem.city.id}
-        if (this.editedItem.educational!==''){this.editedItem.educational = this.editedItem.educational.id}
-        if (this.editedItem.nationality!==''){this.editedItem.nationality = this.editedItem.nationality.id}
-        console.log(this.editedItem)
-
         const response = await axios.put('personal/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
        Object.assign(this.desserts[this.editedIndex], this.editedItem)
         console.log(response)
