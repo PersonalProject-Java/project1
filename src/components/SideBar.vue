@@ -1,0 +1,99 @@
+<template>
+  <div>
+<v-app>
+    <MyNavbar v-if="$store.state.token"/>
+    <v-navigation-drawer app clipped flat dark expand-on-hover color="#27496D" class="mt-10" v-if="$store.state.token">
+      <v-list>
+        <v-list-item class="px-2">
+          <v-list-item-avatar>
+            <v-img src="https://randomuser.me/api/portraits/men/11.jpg"></v-img>
+          </v-list-item-avatar>
+
+          <v-list-item-title>Admin</v-list-item-title>
+        </v-list-item>
+        <v-list-item-group v-for="item in items" :key="item.root" v-model="selectedItem" color="white" >
+        <v-list-item v-if="!item.subLinks" :to="item.path">
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>
+          <v-list-item v-text="item.text"></v-list-item>
+          </v-list-item-title>
+        </v-list-item>
+          <v-list-group
+              v-else
+              :key="item.text"
+              no-action
+              :prepend-icon="item.icon"
+          >
+            <template v-slot:activator>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </template>
+
+            <v-list-item
+                v-for="subLink in item.subLinks"
+                :to="subLink.path"
+                :key="subLink.text"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ subLink.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{ subLink.text }}</v-list-item-title>
+
+            </v-list-item>
+
+          </v-list-group>
+        </v-list-item-group>
+
+      </v-list>
+    </v-navigation-drawer>
+</v-app>
+  </div>
+</template>
+
+
+
+
+
+<script>
+
+
+  import MyNavbar from "@/components/MyNavbar";
+  import MyFooter from "@/components/MyFooter";
+  export default {
+    name:'SideBar',
+    components: {MyFooter, MyNavbar},
+    data(){
+      return{
+        selectedItem: 0,
+        items: [
+              {icon: 'fas fa-paste', text: 'Qo\'llanma', subLinks:[
+              {icon: 'fas fa-map', text: 'Region', path: '/region'},
+              {icon: 'fas fa-city', text: 'Districts', path: '/district'},
+              {icon: 'fas fa-city', text: 'City', path: '/city'},
+              {icon: 'fas fa-restroom', text: 'Floor', path:'/floor'},
+              {icon: 'fas fa-graduation-cap', text: 'Educational', path: '/educational'},
+              {icon: 'far fa-id-card', text: 'Nationality', path: '/nationality'},
+            ]},
+
+          {icon: 'fas fa-user-check', text: 'PersonalForms', path: '/personalforms'},
+        ],
+      }
+    },
+    methods:{
+
+
+      },
+  }
+</script>
+
+<style scoped lang="scss">
+::v-deep .v-application--wrap {
+  min-height: fit-content;
+}
+.iconUser{
+  color: white;
+}
+
+</style>
+

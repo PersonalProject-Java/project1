@@ -1,32 +1,30 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
-  </div>
+  <v-app>
+    <SideBar />
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+<script>
+// import DataTable from "@/views/MyCity.vue";
+import SideBar from "@/components/SideBar";
+// import MyFooter from "@/components/MyFooter";
+import axios from "axios";
+export default {
+  name: 'App',
+  components: { SideBar },
+  data: () => ({
+    token: 'Bearer ' + localStorage.getItem('token'),
+  }),
+    mounted: function () {
+    if (localStorage.getItem('token')) {
+      axios.get('auth/userme', {headers: {'authorization': this.token}}).then(response => {
+        localStorage.setItem('region', response.data.region.name)
+        this.$store.commit('changeRole',response.data.role.name)
+      });
+    }
+  }
+};
+</script>
