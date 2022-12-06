@@ -9,6 +9,9 @@ import MenuIcon from 'vue-material-design-icons/Menu.vue';
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import Vuetify from "vuetify";
 import VDatetimePicker from 'v-datetime-field'
+import { VueMaskDirective } from 'v-mask'
+
+Vue.directive('mask', VueMaskDirective);
 Vue.component('menu-icon', MenuIcon);
 Vue.config.productionTip = false
 Vue.use(VueperSlides, VueperSlide);

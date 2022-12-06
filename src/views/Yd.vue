@@ -956,7 +956,7 @@
 import axios from "axios";
 
 export default {
-  name:'personalforms',
+  name:'yd',
   data: () => ({
     deleteId:'',
     totalElement:'',
@@ -1099,10 +1099,6 @@ export default {
     this.educational = educationalResponse.data
 
   },
-
-
-
-
   computed: {
 
     totalRecords() {
@@ -1135,11 +1131,10 @@ export default {
 
   methods: {
     async nextperson() {
-      const response = await axios.get('personal/get', {
+      const response = await axios.get('yd/get', {
         params: {page: this.page-1,text:this.search},
         headers: {'authorization': this.token}
       })
-
       this.totalElement = response.data.totalElements
       if (this.search!== '' && this.search.length > 3 && response.data.length!==0){
         this.desserts=response.data
@@ -1151,14 +1146,7 @@ export default {
         this.loading=false
       }
     },
-    watch: {
-      '$route.query.page': {
-        handler() {
-          this.nextperson();
-        },
-        immediate: true
-      }
-    },
+
     initialize() {},
 
     async sorted() {
@@ -1189,7 +1177,7 @@ export default {
     },
 
     async deleteItemConfirm() {
-      const districtResponse = await axios.delete('personal/delete/'+this.deleteId, {headers: {'authorization': this.token}})
+      const districtResponse = await axios.delete('yd/delete/'+this.deleteId, {headers: {'authorization': this.token}})
       this.desserts.splice(this.editedIndex, 1)
       this.closeDelete()
     },
@@ -1213,19 +1201,18 @@ export default {
 
     async save() {
       if (this.editedIndex > -1) {
-        console.log(this.editedItem)
         if (isNaN(this.editedItem.floor)){this.editedItem.floor = this.editedItem.floor.id}
         if (isNaN(this.editedItem.region)){this.editedItem.region = this.editedItem.region.id}
         if (isNaN(this.editedItem.district)){this.editedItem.district = this.editedItem.district.id}
         if (isNaN(this.editedItem.city)){this.editedItem.city = this.editedItem.city.id}
         if (isNaN(this.editedItem.educational)){this.editedItem.educational = this.editedItem.educational.id}
         if (isNaN(this.editedItem.nationality)){this.editedItem.nationality = this.editedItem.nationality.id}
-        await axios.put('personal/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
+        await axios.put('yd/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
         this.nextperson()
       }
       else {
-       await axios.post('personal/add',  this.editedItem, {headers: {'authorization': this.token}})
+       await axios.post('yd/add',  this.editedItem, {headers: {'authorization': this.token}})
        this.desserts.push(this.editedItem)
       }
        this.close()

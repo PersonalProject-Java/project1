@@ -5,13 +5,16 @@
         dense
         dark
         fixed
-    >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
+    >
+      <h4>{{$store.state.fullname}}</h4>
       <v-spacer></v-spacer>
 
-      <v-btn color="#06080E" v-if="$store.state.token" @click="logOut">
-        Logout
+      <v-btn color="#FF0202" v-if="$store.state.token" @click="logOut">
+         chiqish
+      </v-btn>
+      <v-btn color="#06080E" to="/register" class=" ml-5 black" v-if="$store.state.role === 'SUPERADMIN' || $store.state.role === 'ADMIN'">
+         qo'shish
       </v-btn>
     </v-app-bar>
   </div>
@@ -26,7 +29,7 @@ export default {
   },
   methods:{
     logOut(){
-          localStorage.clear(),
+          sessionStorage.clear(),
           this.$router.push('/'),
           window.location.reload()
     }

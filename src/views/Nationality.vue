@@ -6,7 +6,7 @@
         <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
-            label="Search"
+            label="Qidirish"
             single-line
             hide-details
         ></v-text-field>
@@ -15,8 +15,7 @@
           :headers="headers"
           :items="desserts"
           :search="search"
-          sort-by="calories"
-          class="elevation-1"
+          class="elevation-24"
       >
         <template v-slot:top>
           <v-toolbar
@@ -41,7 +40,7 @@
                     v-bind="attrs"
                     v-on="on"
                 >
-                  Create
+                  Yangi yaratish
                 </v-btn>
               </template>
               <v-card>
@@ -59,47 +58,7 @@
                       >
                         <v-text-field
                             v-model="editedItem.name"
-                            label="Dessert name"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                      >
-                        <v-text-field
-                            v-model="editedItem.calories"
-                            label="Calories"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                      >
-                        <v-text-field
-                            v-model="editedItem.fat"
-                            label="Fat (g)"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                      >
-                        <v-text-field
-                            v-model="editedItem.carbs"
-                            label="Carbs (g)"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                      >
-                        <v-text-field
-                            v-model="editedItem.protein"
-                            label="Protein (g)"
+                            label="name"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -113,25 +72,25 @@
                       text
                       @click="close"
                   >
-                    Cancel
+                    Bekor qilish
                   </v-btn>
                   <v-btn
                       color="blue darken-1"
                       text
                       @click="save"
                   >
-                    Save
+                    Saqlash
                   </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
             <v-dialog v-model="dialogDelete" max-width="500px">
               <v-card>
-                <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                <v-card-title class="text-h5">Siz rostan ham ushbu ma'lumotni o'chirishga rozimisiz?</v-card-title>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                  <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                  <v-btn color="blue darken-1" text @click="closeDelete">Bekor qilish</v-btn>
+                  <v-btn color="blue darken-1" text @click="deleteItemConfirm">Roziman</v-btn>
                   <v-spacer></v-spacer>
                 </v-card-actions>
               </v-card>
@@ -173,10 +132,11 @@ import axios from "axios";
 export default {
   name:'nationality',
   data: () => ({
+    deleteId:'',
     search:'',
     dialog: false,
     dialogDelete: false,
-    token: 'Bearer ' + localStorage.getItem('token'),
+    token: 'Bearer ' + sessionStorage.getItem('token'),
     headers: [
       {
         text: 'Nomlanishi',
@@ -190,11 +150,9 @@ export default {
     editedIndex: -1,
     editedItem: {
       name: '',
-      region: '',
     },
     defaultItem: {
       name: '',
-      region: '',
     },
   }),
 
@@ -202,15 +160,12 @@ export default {
   mounted: async function () {
     const response = await axios.get('nationality/get', {headers: { 'authorization': this.token }})
     this.desserts = response.data
-    console.log(response.data)
-
-
   },
 
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'Yangi yaratish' : 'O\'zgartirish'
     },
   },
 
@@ -233,18 +188,21 @@ export default {
     },
 
     editItem (item) {
+
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem (item) {
+      this.deleteId = item.id
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
-    deleteItemConfirm () {
+    async deleteItemConfirm() {
+      const districtResponse = await axios.delete('nationality/delete/' + this.deleteId, {headers: {'authorization': this.token}})
       this.desserts.splice(this.editedIndex, 1)
       this.closeDelete()
     },
@@ -265,10 +223,12 @@ export default {
       })
     },
 
-    save () {
+    async save() {
       if (this.editedIndex > -1) {
+        const response = await axios.put('nationality/edit/' + this.editedItem.id, this.editedItem, {headers: {'authorization': this.token}})
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
       } else {
+        await axios.post('nationality/add', this.editedItem, {headers: {'authorization': this.token}})
         this.desserts.push(this.editedItem)
       }
       this.close()

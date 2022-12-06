@@ -5,9 +5,11 @@
 </template>
 <script>
 import MyLogin from "@/views/MyLogin";
+
 export default {
   components: {MyLogin},
   data: () => ({
+    token: 'Bearer ' + sessionStorage.getItem('token'),
         }),
 
 };

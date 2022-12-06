@@ -16,15 +16,21 @@ export default {
   name: 'App',
   components: { SideBar },
   data: () => ({
-    token: 'Bearer ' + localStorage.getItem('token'),
+    token: 'Bearer ' + sessionStorage.getItem('token'),
   }),
     mounted: function () {
-    if (localStorage.getItem('token')) {
+    if (sessionStorage.getItem('token')) {
       axios.get('auth/userme', {headers: {'authorization': this.token}}).then(response => {
-        localStorage.setItem('region', response.data.region.name)
+        this.$store.commit('setFullName',response.data.fullName)
+        sessionStorage.setItem("role",response.data.role.name)
+        console.log(response.data)
         this.$store.commit('changeRole',response.data.role.name)
+        sessionStorage.setItem("region", response.data.region.name)
+        this.$store.commit('setregionid',response.data.region.id)
+
       });
     }
+
   }
 };
 </script>

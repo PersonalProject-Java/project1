@@ -6,7 +6,7 @@
         <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
-            label="Search"
+            label="Qidirish"
             single-line
             hide-details
         ></v-text-field>
@@ -16,7 +16,7 @@
           :items="desserts"
           :search="search"
           sort-by="calories"
-          class="elevation-1"
+          class="elevation-4"
       >
         <template v-slot:top>
           <v-toolbar
@@ -41,7 +41,7 @@
                     v-bind="attrs"
                     v-on="on"
                 >
-                  Create
+                  Yangi yaratish
                 </v-btn>
               </template>
               <v-card>
@@ -52,6 +52,15 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
+                      <v-select
+                          :items="region"
+                          item-text="name"
+                          item-value="id"
+                          v-model="editedItem.region"
+                          label="Viloyati"
+                          persistent-hint
+                          single-line
+                      ></v-select>
                       <v-col
                           cols="12"
                           sm="6"
@@ -59,49 +68,11 @@
                       >
                         <v-text-field
                             v-model="editedItem.name"
-                            label="Dessert name"
+                            label="Tuman nomi"
                         ></v-text-field>
                       </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                      >
-                        <v-text-field
-                            v-model="editedItem.calories"
-                            label="Calories"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                      >
-                        <v-text-field
-                            v-model="editedItem.fat"
-                            label="Fat (g)"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                      >
-                        <v-text-field
-                            v-model="editedItem.carbs"
-                            label="Carbs (g)"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                      >
-                        <v-text-field
-                            v-model="editedItem.protein"
-                            label="Protein (g)"
-                        ></v-text-field>
-                      </v-col>
+
+
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -174,9 +145,11 @@ export default {
   name:'district',
   data: () => ({
     search:'',
+    region:'',
+    deleteId:'',
     dialog: false,
     dialogDelete: false,
-    token: 'Bearer ' + localStorage.getItem('token'),
+    token: 'Bearer ' + sessionStorage.getItem('token'),
     headers: [
       {
         text: 'Tuman',
@@ -201,17 +174,16 @@ export default {
 
 
   mounted: async function () {
-     const response = await axios.get('district/get', {headers: { 'authorization': this.token }})
+    const regionResponse = await axios.get('region/get', {headers: { 'authorization': this.token }})
+    this.region = regionResponse.data
+    const response = await axios.get('district/get', {headers: { 'authorization': this.token }})
     this.desserts = response.data
-    console.log(response.data)
-
-
   },
 
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'Yangi yaratish' : 'O\'zgartirish'
     },
   },
 
@@ -239,12 +211,14 @@ export default {
     },
 
     deleteItem (item) {
+      this.deleteId = item.id
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
-    deleteItemConfirm () {
+    async deleteItemConfirm() {
+      const districtResponse = await axios.delete('district/delete/' + this.deleteId, {headers: {'authorization': this.token}})
       this.desserts.splice(this.editedIndex, 1)
       this.closeDelete()
     },
@@ -265,10 +239,13 @@ export default {
       })
     },
 
-    save () {
+    async save() {
       if (this.editedIndex > -1) {
+        if (this.editedItem.region.name){this.editedItem.region = this.editedItem.region.id}
+        const response = await axios.put('district/edit/' + this.editedItem.id, this.editedItem, {headers: {'authorization': this.token}})
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
       } else {
+        await axios.post('district/add', this.editedItem, {headers: {'authorization': this.token}})
         this.desserts.push(this.editedItem)
       }
       this.close()
