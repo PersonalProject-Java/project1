@@ -15,7 +15,7 @@
 
             <v-data-table
               :headers="headers"
-              :items="desserts"
+              :items="ordersWithIndex"
               :items-per-page="itemsPerPage"
               item-key="name"
               single-expand
@@ -986,20 +986,14 @@ export default {
     ],
 
     headers: [
-    //  {
-    //       text: 'T/R',
-    //       align: 'start',
-    //       sortable: true,
-    //       value: 'id',
-    // },
-      {
-        text: 'Ismi',
-        align: 'start',
-        sortable: false,
-        id: 'id',
-        value: 'name',
-      },
+     {
+          text: 'T/R',
+          align: 'start',
+          sortable: true,
+          value: 'index',
+    },
       { text: 'Familyasi', value: 'sureName'},
+      {text: 'Ismi',sortable: false,id: 'id',value: 'name',},
       { text: 'Otasining ismi', value: 'lastName' },
       { text: 'PNFL', value: 'pnfl' },
       { text: 'SerePassport', value: 'serePassport' },
@@ -1101,6 +1095,15 @@ export default {
   },
   computed: {
 
+    ordersWithIndex(){
+      return this.desserts.map(
+          (items, index) => ({
+            ...items,
+            index: (this.page-1)*10 + index + 1
+          }))
+    },
+
+
     totalRecords() {
       return this.desserts.length
     },
@@ -1137,8 +1140,8 @@ export default {
       })
       this.totalElement = response.data.totalElements
       if (this.search!== '' && this.search.length > 3 && response.data.length!==0){
-        this.desserts=response.data
-        this.totalPages = this.desserts.length
+        this.desserts=response.data.content
+        this.totalPages = response.data.totalPages
         this.loading=false
       }else {
         this.desserts = response.data.content

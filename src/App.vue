@@ -23,7 +23,6 @@ export default {
       axios.get('auth/userme', {headers: {'authorization': this.token}}).then(response => {
         this.$store.commit('setFullName',response.data.fullName)
         sessionStorage.setItem("role",response.data.role.name)
-        console.log(response.data)
         this.$store.commit('changeRole',response.data.role.name)
         sessionStorage.setItem("region", response.data.region.name)
         this.$store.commit('setregionid',response.data.region.id)

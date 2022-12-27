@@ -281,7 +281,6 @@ export default {
 
     async changedStatus(item) {
       this.statusId = item.id
-      console.log('authorization:'+this.token)
       const response = await axios.put('user/edit/status/'+this.statusId,this.editedItem, {headers: {'authorization': this.token}})
 
 
@@ -330,8 +329,7 @@ export default {
       if (this.editedIndex > -1) {
         if (isNaN(this.editedItem.region)){this.editedItem.region = this.editedItem.region.id}
         if (isNaN(this.editedItem.district)){this.editedItem.district = this.editedItem.district.id}
-        console.log(this.editedItem)
-        await axios.put('user/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
+         await axios.put('user/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
 
       } else {

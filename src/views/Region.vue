@@ -122,7 +122,6 @@
           </v-btn>
         </template>
       </v-data-table>
-
     </v-col>
   </v-row>
 </template>
@@ -216,7 +215,6 @@ export default {
         this.editedIndex = -1
       })
     },
-
     closeDelete () {
       this.dialogDelete = false
       this.$nextTick(() => {
@@ -224,7 +222,6 @@ export default {
         this.editedIndex = -1
       })
     },
-
     async save() {
       if (this.editedIndex > -1) {
         const response = await axios.put('region/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})

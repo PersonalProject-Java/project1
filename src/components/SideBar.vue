@@ -97,8 +97,8 @@
 
             ]},
 
-          {icon: 'fa fa-users', text: 'PersonalForms', path: '/personalforms'},
-          {icon: 'fas fa-people-carry', text: 'Dra Chaes', path: '/dr'},
+          {icon: 'fa fa-users', text: 'Afg\'on ishtirokchilari', path: '/personalforms'},
+          {icon: 'fas fa-people-carry', text: 'Dra', path: '/dr'},
           {icon: 'fas fa-bomb', text: 'Yaderniy', path: '/yd'},
 
         ],

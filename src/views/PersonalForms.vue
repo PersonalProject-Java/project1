@@ -15,7 +15,7 @@
 
             <v-data-table
               :headers="headers"
-              :items="desserts"
+              :items="ordersWithIndex"
               :items-per-page="itemsPerPage"
               item-key="name"
               single-expand
@@ -23,11 +23,16 @@
               :hide-default-footer="true"
               :loading="loading"
             >
-    <template v-slot:top>
+
+<!--              <template v-slot:item.row="{item, index}">-->
+<!--                  {{ (this.page-1)*limit + index +1 }}-->
+<!--              </template>-->
+
+              <template v-slot:top>
                <v-toolbar
                     color="#6F92AA"
                     outlined
-              >
+               >
               <v-toolbar-title>Shaxslar : {{totalElement}}</v-toolbar-title>
 
               <v-divider
@@ -68,12 +73,10 @@
                       md="2"
                   >
                     <v-text-field
-                        autofocus
                         counter
-                        success
-                        v-model="editedItem.name"
                         clearable
-                        label="Ismi"
+                        v-model="editedItem.lastName"
+                        label="Otasining ismi"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -82,10 +85,12 @@
                       md="2"
                   >
                     <v-text-field
+                        autofocus
                         counter
+                        success
+                        v-model="editedItem.name"
                         clearable
-                        v-model="editedItem.lastName"
-                        label="Otasining ismi"
+                        label="Ismi"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -904,7 +909,7 @@
                   </v-dialog>
       </v-toolbar>
     </template>
-    <template  v-if="$store.state.role==='SUPERADMIN' || $store.state.role==='ADMIN'" v-slot:item.actions="{ item }" >
+    <template v-slot:item.actions="{ item }" >
       <div style="width: 50px">
       <v-icon
           color="primary"
@@ -986,20 +991,14 @@ export default {
     ],
 
     headers: [
-    //  {
-    //       text: 'T/R',
-    //       align: 'start',
-    //       sortable: true,
-    //       value: 'id',
-    // },
-      {
-        text: 'Ismi',
-        align: 'start',
-        sortable: false,
-        id: 'id',
-        value: 'name',
-      },
+     {
+          text: 'T/R',
+          align: 'start',
+          sortable: true,
+          value: 'index',
+    },
       { text: 'Familyasi', value: 'sureName'},
+      {text: 'Ismi', align: 'start',sortable: false,id: 'id',value: 'name',},
       { text: 'Otasining ismi', value: 'lastName' },
       { text: 'PNFL', value: 'pnfl' },
       { text: 'SerePassport', value: 'serePassport' },
@@ -1009,7 +1008,7 @@ export default {
       { text: 'region', value: 'region.name' },
       { text: 'city', value: 'city.name' },
       { text: 'district', value: 'district.name' },
-/*      { text: 'Seree', value: 'seree' },
+/*    { text: 'Seree', value: 'seree' },
       { text: 'number', value: 'number' },
       { text: 'DateEntry', value: 'dateEntry' },
       { text: 'whoGive', value: 'whoGive' },
@@ -1105,6 +1104,17 @@ export default {
 
   computed: {
 
+    ordersWithIndex(){
+      return this.desserts.map(
+          (items, index) => ({
+            ...items,
+            index: (this.page-1)*10 + index + 1
+          }))
+    },
+
+
+
+
     totalRecords() {
       return this.desserts.length
     },
@@ -1139,17 +1149,16 @@ export default {
         params: {page: this.page-1,text:this.search},
         headers: {'authorization': this.token}
       })
-
       this.totalElement = response.data.totalElements
       if (this.search!== '' && this.search.length > 3 && response.data.length!==0){
-        this.desserts=response.data
-        this.totalPages = this.desserts.length
+        this.desserts=response.data.content
+        this.totalPages = response.data.totalPages
         this.loading=false
       }else {
         this.desserts = response.data.content
         this.totalPages = response.data.totalPages
         this.loading=false
-      }
+            }
     },
     watch: {
       '$route.query.page': {
@@ -1213,7 +1222,6 @@ export default {
 
     async save() {
       if (this.editedIndex > -1) {
-        console.log(this.editedItem)
         if (isNaN(this.editedItem.floor)){this.editedItem.floor = this.editedItem.floor.id}
         if (isNaN(this.editedItem.region)){this.editedItem.region = this.editedItem.region.id}
         if (isNaN(this.editedItem.district)){this.editedItem.district = this.editedItem.district.id}
