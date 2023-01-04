@@ -154,7 +154,7 @@ export default {
     defaultItem: {
       name: '',
       region: '',
-    },
+    }, 
   }),
 
 
