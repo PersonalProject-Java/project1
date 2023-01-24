@@ -904,7 +904,7 @@
                   </v-dialog>
       </v-toolbar>
     </template>
-    <template  v-if="$store.state.role==='SUPERADMIN' || $store.state.role==='ADMIN'" v-slot:item.actions="{ item }" >
+    <template  v-slot:item.actions="{ item }" >
       <div style="width: 50px">
       <v-icon
           color="primary"
@@ -1160,7 +1160,7 @@ export default {
           },
 
     editItem(item) {
-
+      this.desserts.push(item)
        this.editedIndex = this.desserts.indexOf(item)
        this.editedItem = Object.assign({}, item)
        this.dialog = true
@@ -1212,13 +1212,18 @@ export default {
         if (isNaN(this.editedItem.nationality)){this.editedItem.nationality = this.editedItem.nationality.id}
         await axios.put('dr/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
+        this.close()
         this.nextperson()
       }
       else {
+        if (this.editedItem.pnfl.length<14){
+          alert("Siz ma'lumotlarni to'ldirmadingiz")
+        }else {
        await axios.post('dr/add',  this.editedItem, {headers: {'authorization': this.token}})
        this.desserts.push(this.editedItem)
+          this.close()
+        }
       }
-       this.close()
     },
   },
 }

@@ -17,7 +17,7 @@
               :headers="headers"
               :items="ordersWithIndex"
               :items-per-page="itemsPerPage"
-              item-key="name"
+              item-key="desserts.index"
               single-expand
               class="elevation-1"
               :hide-default-footer="true"
@@ -1045,20 +1045,20 @@ export default {
       whoGive:'',
       datePassport:'',
       language:'',
-      floor:'',
+      floor:[],
       seree:'',
       number:'',
       dateEntry:'',
       whoGive2:'',
       birthDay:'',
       birthPlace:'',
-      nationality:'',
+      nationality:[],
       registeredAllTime:'',
-      region:'',
-      city:'',
-      district:'',
+      region:[],
+      city:[],
+      district:[],
       neighborhood:'',
-      educational:'',
+      educational:[],
       institution:'',
       specialty:'',
       workPlace:'',
@@ -1113,8 +1113,6 @@ export default {
     },
 
 
-
-
     totalRecords() {
       return this.desserts.length
     },
@@ -1138,7 +1136,18 @@ export default {
     dialogDelete (val) {
       val || this.closeDelete()
     },
+    '$route.query.page': {
+      handler() {
+        this.nextperson();
+      },
+      immediate: true
+    }
   },
+
+
+
+
+
   created () {
     this.initialize()
   },
@@ -1160,14 +1169,7 @@ export default {
         this.loading=false
             }
     },
-    watch: {
-      '$route.query.page': {
-        handler() {
-          this.nextperson();
-        },
-        immediate: true
-      }
-    },
+
     initialize() {},
 
     async sorted() {
@@ -1178,7 +1180,7 @@ export default {
           },
 
     editItem(item) {
-
+      this.desserts.push(item)
        this.editedIndex = this.desserts.indexOf(item)
        this.editedItem = Object.assign({}, item)
        this.dialog = true
@@ -1213,8 +1215,8 @@ export default {
     },
 
     closeDelete () {
-      this.dialogDelete = false
-      this.$nextTick(() => {
+        this.dialogDelete = false
+        this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
@@ -1222,21 +1224,30 @@ export default {
 
     async save() {
       if (this.editedIndex > -1) {
+        console.log('edit page')
         if (isNaN(this.editedItem.floor)){this.editedItem.floor = this.editedItem.floor.id}
         if (isNaN(this.editedItem.region)){this.editedItem.region = this.editedItem.region.id}
         if (isNaN(this.editedItem.district)){this.editedItem.district = this.editedItem.district.id}
         if (isNaN(this.editedItem.city)){this.editedItem.city = this.editedItem.city.id}
         if (isNaN(this.editedItem.educational)){this.editedItem.educational = this.editedItem.educational.id}
         if (isNaN(this.editedItem.nationality)){this.editedItem.nationality = this.editedItem.nationality.id}
+        console.log(this.editedItem)
         await axios.put('personal/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
+        this.close()
         this.nextperson()
-      }
-      else {
-       await axios.post('personal/add',  this.editedItem, {headers: {'authorization': this.token}})
+       }
+       else{
+        console.log(this.editedItem.pnfl.length)
+         if (this.editedItem.pnfl.length<14){
+           alert("Siz ma'lumotlarni to'ldirmadingiz")
+         }else {
+       await axios.post('personal/add', this.editedItem, {headers: {'authorization': this.token}})
        this.desserts.push(this.editedItem)
+        this.close()
       }
-       this.close()
+    }
+
     },
   },
 }
