@@ -22,6 +22,7 @@
               class="elevation-1"
               :hide-default-footer="true"
               :loading="loading"
+              id="my-table"
             >
 
 <!--              <template v-slot:item.row="{item, index}">-->
@@ -34,6 +35,26 @@
                     outlined
                >
               <v-toolbar-title>Shaxslar : {{totalElement}}</v-toolbar-title>
+                 <br>
+                 <v-btn
+                     class="ml-2"
+                     @click="exportDessertsToExcel(page)"
+                 >
+                   Export to Excel
+                 </v-btn>
+<!--                 <v-btn-->
+<!--                     class="ml-2"-->
+<!--                     @click="generatePDF"-->
+<!--                 >-->
+<!--                   Export to PDF-->
+<!--                 </v-btn>-->
+                 <vue-html-to-paper
+                     ref="print"
+                     content="#my-table"
+                     page-size="A4"
+                     :show-header="true"
+                     :print-delay="500"
+                 />
 
               <v-divider
                     class="mx-4"
@@ -58,6 +79,7 @@
                   >
                    Yaratish
                   </v-btn>
+
           </template>
                 <v-card>
             <v-card-title>
@@ -957,12 +979,21 @@
   </v-row>
 </template>
 
+
 <script>
 import axios from "axios";
+import XLSX from 'xlsx';
+import { utils } from 'xlsx';
+import jsPDF from 'jspdf'
 
 export default {
   name:'personalforms',
+  components:{
+  },
   data: () => ({
+
+
+
     deleteId:'',
     totalElement:'',
     modal: false,
@@ -982,7 +1013,7 @@ export default {
     token: 'Bearer ' + sessionStorage.getItem('token'),
     i:1,
     page: 1,
-    totalPages:'',
+    totalPages:0,
     itemsPerPage: 10,
     perPageChoices: [
       {text:'5 records/page' , value: 5},
@@ -1098,10 +1129,6 @@ export default {
     this.educational = educationalResponse.data
 
   },
-
-
-
-
   computed: {
 
     ordersWithIndex(){
@@ -1128,7 +1155,6 @@ export default {
       return this.editedIndex === -1 ? 'Yangi yaratish' : 'Shaxsning ma\'lumotlarini o\'zgartirish'
     },
   },
-
   watch: {
     dialog (val) {
       val || this.close()
@@ -1143,16 +1169,47 @@ export default {
       immediate: true
     }
   },
-
-
-
-
-
   created () {
     this.initialize()
   },
 
   methods: {
+    //
+    // generatePDF() {
+    //   const doc = new jsPDF();
+    //   const htmlContent = document.querySelector('#my-table');
+    //   doc.autoTable({
+    //     html: htmlContent
+    //   });
+    //   doc.save('my-table.pdf');
+    // },
+
+
+    exportDessertsToExcel(page) {
+      let count=(page-1)*10 + 1;
+      const excelData =this.desserts.map(disserts=>({
+        "№":count++,
+        Familyasi: disserts.sureName,
+        Ismi: disserts.name,
+        OtasiningIsmi:disserts.lastName,
+        PNFL: disserts.pnfl,
+        SereePassport: disserts.serePassport,
+        Passport_raqami: disserts.numberPassport,
+        Viloyati: disserts.region ? disserts.region.name : null,
+        Tumani: disserts.district ? disserts.district.name : null,
+        Shahar: disserts.city ? disserts.city.name : null,
+        Millati: disserts.nationality ? disserts.nationality.name : null,
+      }))
+     this.exportToExcel(excelData, 'Desserts');
+    },
+    exportToExcel(data, filename) {
+      const worksheet = utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+      XLSX.writeFile(workbook, filename + '.xlsx');
+    },
+
+
     async nextperson() {
       const response = await axios.get('personal/get', {
         params: {page: this.page-1,text:this.search},

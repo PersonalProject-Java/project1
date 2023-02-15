@@ -29,7 +29,11 @@
                     outlined
               >
               <v-toolbar-title>Shaxslar : {{totalElement}}</v-toolbar-title>
-
+                 <v-btn
+                     class="ml-2"
+                     @click="exportDessertsToExcel(page)"
+                 >
+                   Export to Excel</v-btn>
               <v-divider
                     class="mx-4"
                     inset
@@ -954,6 +958,7 @@
 
 <script>
 import axios from "axios";
+import XLSX, {utils} from "xlsx";
 
 export default {
   name:'dr',
@@ -977,7 +982,7 @@ export default {
     token: 'Bearer ' + sessionStorage.getItem('token'),
     i:1,
     page: 1,
-    totalPages:'',
+    totalPages:0,
     itemsPerPage: 10,
     perPageChoices: [
       {text:'5 records/page' , value: 5},
@@ -1131,6 +1136,32 @@ export default {
   },
 
   methods: {
+
+    exportDessertsToExcel(page) {
+      let count=(page-1)*10 + 1;
+      const excelData =this.desserts.map(disserts=>({
+        Tartib_Raqami:count++,
+        Familyasi: disserts.sureName,
+        Ismi: disserts.name,
+        OtasiningIsmi:disserts.lastName,
+        PNFL: disserts.pnfl,
+        SereePassport: disserts.serePassport,
+        Passport_raqami: disserts.numberPassport,
+        Viloyati: disserts.region ? disserts.region.name : null,
+        Tumani: disserts.district ? disserts.district.name : null,
+        Shahar: disserts.city ? disserts.city.name : null,
+        Millati: disserts.nationality ? disserts.nationality.name : null,
+      }))
+      this.exportToExcel(excelData, 'Desserts');
+    },
+    exportToExcel(data, filename) {
+      const worksheet = utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+      XLSX.writeFile(workbook, filename + '.xlsx');
+    },
+
+
     async nextperson() {
       const response = await axios.get('dr/get', {
         params: {page: this.page-1,text:this.search},

@@ -276,16 +276,10 @@ export default {
       this.district = districtResponse.data
     },
 
-
-
-
     async changedStatus(item) {
       this.statusId = item.id
       const response = await axios.put('user/edit/status/'+this.statusId,this.editedItem, {headers: {'authorization': this.token}})
-
-
     },
-
 
     initialize () {
     },
