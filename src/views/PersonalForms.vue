@@ -35,27 +35,19 @@
                     outlined
                >
               <v-toolbar-title>Shaxslar : {{totalElement}}</v-toolbar-title>
+                 <v-divider
+                     class="mx-4"
+                     inset
+                     vertical
+                 ></v-divider>
                  <br>
-                 <v-btn
-                     class="ml-2"
-                     @click="exportDessertsToExcel(page)"
-                 >
-                   Export to Excel
-                 </v-btn>
-<!--                 <v-btn-->
-<!--                     class="ml-2"-->
-<!--                     @click="generatePDF"-->
-<!--                 >-->
-<!--                   Export to PDF-->
-<!--                 </v-btn>-->
-                 <vue-html-to-paper
-                     ref="print"
-                     content="#my-table"
-                     page-size="A4"
-                     :show-header="true"
-                     :print-delay="500"
-                 />
-
+                 <v-icon class="excel" color="#8AD86E"  @click="exportDessertsToExcel(page)">fa-thin fa-file-excel</v-icon>
+                 <v-divider
+                     class="mx-4"
+                     inset
+                     vertical
+                 ></v-divider>
+                 <v-icon class="pdf" color="#D82F00" @click="exportPDF(page)">fa-solid fa-file-pdf</v-icon>
               <v-divider
                     class="mx-4"
                     inset
@@ -948,6 +940,7 @@
         mdi-pen
       </v-icon>
       <v-icon
+          v-if="$store.state.role!=='USER'"
           size="16px"
           color="red"
           @click="deleteItem(item)"
@@ -984,7 +977,8 @@
 import axios from "axios";
 import XLSX from 'xlsx';
 import { utils } from 'xlsx';
-import jsPDF from 'jspdf'
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 export default {
   name:'personalforms',
@@ -993,7 +987,7 @@ export default {
   data: () => ({
 
 
-
+    regionName:'',
     deleteId:'',
     totalElement:'',
     modal: false,
@@ -1029,16 +1023,16 @@ export default {
           value: 'index',
     },
       { text: 'Familyasi', value: 'sureName'},
-      {text: 'Ismi', align: 'start',sortable: false,id: 'id',value: 'name',},
+      {text: 'Ismi',value: 'name',},
       { text: 'Otasining ismi', value: 'lastName' },
       { text: 'PNFL', value: 'pnfl' },
-      { text: 'SerePassport', value: 'serePassport' },
-      { text: 'NumberPassport', value: 'numberPassport' },
+      { text: 'Passport seriasi', value: 'serePassport' },
+      { text: 'Passport raqami', value: 'numberPassport' },
       // { text: 'floor', value: 'floor.name' },
-      { text: 'Nationality', value: 'nationality.name' },
-      { text: 'region', value: 'region.name' },
-      { text: 'city', value: 'city.name' },
-      { text: 'district', value: 'district.name' },
+      { text: 'Millati', value: 'nationality.name' },
+      { text: 'Viloyati', value: 'region.name' },
+      { text: 'Shahar', value: 'city.name' },
+      { text: 'Tuman', value: 'district.name' },
 /*    { text: 'Seree', value: 'seree' },
       { text: 'number', value: 'number' },
       { text: 'DateEntry', value: 'dateEntry' },
@@ -1062,7 +1056,7 @@ export default {
       { text: 'injury', value: 'injury' },
       { text: 'Characters', value: 'characters' },
       { text: 'photo', value: 'photo' },*/
-      { text: 'Jarayon', value: 'actions', sortable: false },
+      { text: 'Thrirlash', value: 'actions', sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
@@ -1174,15 +1168,31 @@ export default {
   },
 
   methods: {
-    //
-    // generatePDF() {
-    //   const doc = new jsPDF();
-    //   const htmlContent = document.querySelector('#my-table');
-    //   doc.autoTable({
-    //     html: htmlContent
-    //   });
-    //   doc.save('my-table.pdf');
-    // },
+
+    exportPDF(page) {
+      const doc = new jsPDF('landScape','pt', 'a4');
+      const headers = ["T/R",'Familyasi','Ismi','OtasiningIsmi','PNFL','SereePassport','Passport_raqami'];
+      const tableData = this.desserts.map((dessert, index) => {
+        const transformedRow = [
+          (page - 1) * 10 + index + 1,
+          dessert.sureName,
+          dessert.name,
+          dessert.lastName,
+          dessert.pnfl,
+          dessert.serePassport,
+          dessert.numberPassport,
+        ];
+        return transformedRow;
+      });
+
+      doc.autoTable({
+        head: [headers],
+        body: tableData,
+      });
+
+      doc.save('desserts.pdf');
+    },
+
 
 
     exportDessertsToExcel(page) {
@@ -1310,6 +1320,13 @@ export default {
 }
 </script>
 <style>
+.pdf:hover{
+  font-size: 50px;
+}
+.excel:hover{
+  font-size: 50px;
+}
+
 .view li{
   height: 30px;
   font-size: 15px;

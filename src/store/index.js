@@ -9,7 +9,8 @@ export default new Vuex.Store({
     role:'',
     region:'',
     regionid:'',
-    fullname:''
+    fullname:'',
+    lan:''
          },
   getters: {
   },
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     setFullName(state,payload){
       return state.fullname = payload
     },
+    changeLan(state,payload){
+      return state.lan = payload
+    }
   },
   actions: {
   },

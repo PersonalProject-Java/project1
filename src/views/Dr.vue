@@ -29,16 +29,24 @@
                     outlined
               >
               <v-toolbar-title>Shaxslar : {{totalElement}}</v-toolbar-title>
-                 <v-btn
-                     class="ml-2"
-                     @click="exportDessertsToExcel(page)"
-                 >
-                   Export to Excel</v-btn>
-              <v-divider
-                    class="mx-4"
-                    inset
-                    vertical
-               ></v-divider>
+                 <v-divider
+                     class="mx-4"
+                     inset
+                     vertical
+                 ></v-divider>
+                 <br>
+                 <v-icon class="excel" color="#8AD86E"  @click="exportDessertsToExcel(page)">fa-thin fa-file-excel</v-icon>
+                 <v-divider
+                     class="mx-4"
+                     inset
+                     vertical
+                 ></v-divider>
+                 <v-icon class="pdf" color="#D82F00" @click="exportPDF(page)">fa-solid fa-file-pdf</v-icon>
+                 <v-divider
+                     class="mx-4"
+                     inset
+                     vertical
+                 ></v-divider>
               <v-spacer></v-spacer>
 
               <v-dialog
@@ -925,6 +933,7 @@
         mdi-pen
       </v-icon>
       <v-icon
+          v-if="$store.state.role!=='USER'"
           size="16px"
           color="red"
           @click="deleteItem(item)"
@@ -959,6 +968,7 @@
 <script>
 import axios from "axios";
 import XLSX, {utils} from "xlsx";
+import jsPDF from "jspdf";
 
 export default {
   name:'dr',
@@ -998,16 +1008,16 @@ export default {
           value: 'index',
     },
       { text: 'Familyasi', value: 'sureName'},
-      {text: 'Ismi',sortable: false,id: 'id',value: 'name',},
+      {text: 'Ismi',value: 'name',},
       { text: 'Otasining ismi', value: 'lastName' },
       { text: 'PNFL', value: 'pnfl' },
-      { text: 'SerePassport', value: 'serePassport' },
-      { text: 'NumberPassport', value: 'numberPassport' },
+      { text: 'Passport seriasi', value: 'serePassport' },
+      { text: 'Passport raqami', value: 'numberPassport' },
       // { text: 'floor', value: 'floor.name' },
-      { text: 'Nationality', value: 'nationality.name' },
-      { text: 'region', value: 'region.name' },
-      { text: 'city', value: 'city.name' },
-      { text: 'district', value: 'district.name' },
+      { text: 'Millati', value: 'nationality.name' },
+      { text: 'Viloyati', value: 'region.name' },
+      { text: 'Shahar', value: 'city.name' },
+      { text: 'Tuman', value: 'district.name' },
 /*      { text: 'Seree', value: 'seree' },
       { text: 'number', value: 'number' },
       { text: 'DateEntry', value: 'dateEntry' },
@@ -1136,11 +1146,36 @@ export default {
   },
 
   methods: {
+    exportPDF(page) {
+      const doc = new jsPDF('landScape','pt', 'a4');
+      const headers = ["T/R",'Familyasi','Ismi','OtasiningIsmi','PNFL','SereePassport','Passport_raqami'];
+      const tableData = this.desserts.map((dessert, index) => {
+        const transformedRow = [
+          (page - 1) * 10 + index + 1,
+          dessert.sureName,
+          dessert.name,
+          dessert.lastName,
+          dessert.pnfl,
+          dessert.serePassport,
+          dessert.numberPassport,
+        ];
+        return transformedRow;
+      });
+
+      doc.autoTable({
+        head: [headers],
+        body: tableData,
+      });
+
+      doc.save('desserts.pdf');
+    },
+
+
 
     exportDessertsToExcel(page) {
       let count=(page-1)*10 + 1;
       const excelData =this.desserts.map(disserts=>({
-        Tartib_Raqami:count++,
+        "№":count++,
         Familyasi: disserts.sureName,
         Ismi: disserts.name,
         OtasiningIsmi:disserts.lastName,
@@ -1160,6 +1195,7 @@ export default {
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
       XLSX.writeFile(workbook, filename + '.xlsx');
     },
+
 
 
     async nextperson() {
