@@ -10,7 +10,6 @@ export default new Vuex.Store({
     region:'',
     regionid:'',
     fullname:'',
-    lan:'uz'
          },
   getters: {
   },
@@ -23,9 +22,6 @@ export default new Vuex.Store({
     setFullName(state,payload){
       return state.fullname = payload
     },
-    changeLan(state,payload){
-      return state.lan = payload
-    }
   },
   actions: {
   },

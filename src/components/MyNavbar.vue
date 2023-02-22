@@ -7,20 +7,12 @@
         fixed
     >
       <h4>{{$store.state.fullname}}</h4>
+
       <v-spacer></v-spacer>
 
-
-      <a id="lanuz" class=" ml-3" v-bind:class="{stateLang:stateLanUz}" @click="test('uz')">
-        uz
-      </a>
-
-      <a id="lanuz2" class=" ml-3" v-bind:class="{stateLang:stateLanЎз}" @click="test('ўз')">
-        ўз
-      </a>
-
-      <a id="lanuz3" class=" ml-3" v-bind:class="{stateLang:stateLanRU}" @click="test('ru')">
-        ru
-      </a>
+      <a id="lanuz" class=" ml-3" v-bind:class="{stateLang:stateLanUz}" @click="test('uz')">uz</a>
+      <a id="lanuz2" class=" ml-3" v-bind:class="{stateLang:stateLanЎз}" @click="test('ўз')">ўз</a>
+      <a id="lanuz3" class=" ml-3" v-bind:class="{stateLang:stateLanRU}" @click="test('ru')">ru</a>
 
       <v-divider
           class="mx-4"
@@ -28,14 +20,8 @@
           vertical
       ></v-divider>
 
-      <v-btn id="logout" v-if="$store.state.token" @click="logOut">
-         {{ $t('login') }}
-      </v-btn>
-      <v-btn id="register" to="/register" v-if="$store.state.role === 'SUPERADMIN' || $store.state.role === 'ADMIN'">
-        <v-text>
-           {{ $t('add') }}
-        </v-text>
-      </v-btn>
+      <v-btn id="logout" v-if="$store.state.token" @click="logOut">{{ $t('login') }}</v-btn>
+      <v-btn id="register" to="/register" v-if="$store.state.role === 'SUPERADMIN' || $store.state.role === 'ADMIN'">{{ $t('add') }}</v-btn>
 
     </v-app-bar>
   </div>
@@ -49,9 +35,6 @@ export default {
       stateLanUz:true,
       stateLanRU:false,
       stateLanЎз:false,
-      login:'Chiqish',
-      add:'Qo\'shish',
-      languageType: this.$store.state.lan
            }
         },
 
@@ -77,8 +60,6 @@ export default {
       }
       else if(type === 'ўз'){
         this.$i18n.locale='ўз'
-        this.login = 'ЧиҚиш'
-        this.add='Қўшиш'
         this.stateLanЎз = true
         this.stateLanRU = false
         this.stateLanUz = false

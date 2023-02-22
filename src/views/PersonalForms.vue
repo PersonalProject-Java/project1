@@ -1,12 +1,12 @@
 <template>
-  <v-row v-if="$store.state.token">
+  <v-row v-if="$store.state.token" :key="locale">
     <v-col cols="10" class="mt-16">
         <v-card-title>
         <v-spacer></v-spacer>
         <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
-            label="Search"
+            :label="$t('Search')"
             single-line
             hide-details
             @input="this.nextperson"
@@ -34,9 +34,7 @@
                     color="#6F92AA"
                     outlined
                >
-              <v-toolbar-title v-if="$store.state.lan==='uz'">Shaxslar : {{totalElement}}</v-toolbar-title>
-              <v-toolbar-title v-if="$store.state.lan==='ru'">Лица : {{totalElement}}</v-toolbar-title>
-              <v-toolbar-title v-if="$store.state.lan==='ўз'">Шахслар : {{totalElement}}</v-toolbar-title>
+              <v-toolbar-title>{{ $t('Person')}} : {{totalElement}}</v-toolbar-title>
                  <v-divider
                      class="mx-4"
                      inset
@@ -65,35 +63,15 @@
                >
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                      v-if="$store.state.lan==='uz'"
                       color="#336791"
                       dark
                       class="mb-2"
                       v-bind="attrs"
                       v-on="on"
                   >
-                   Yaratish
+                   {{ $t('Create')}}
                   </v-btn>
-                  <v-btn
-                      v-else-if="$store.state.lan==='ru'"
-                      color="#336791"
-                      dark
-                      class="mb-2"
-                      v-bind="attrs"
-                      v-on="on"
-                  >
-                    Создавать
-                  </v-btn>
-                  <v-btn
-                      v-else-if="$store.state.lan==='ўз'"
-                      color="#336791"
-                      dark
-                      class="mb-2"
-                      v-bind="attrs"
-                      v-on="on"
-                  >
-                    Яратиш
-                  </v-btn>
+
 
           </template>
                 <v-card>
@@ -127,7 +105,7 @@
                         success
                         v-model="editedItem.name"
                         clearable
-                        label="Ismi"
+                        :label="$t('Name')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -139,7 +117,7 @@
                         counter
                         clearable
                         v-model="editedItem.sureName"
-                        label="Familyasi"
+                        :label="$t('SureName')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -152,7 +130,7 @@
                         counter
                         validate-on-blur
                         v-model="editedItem.pnfl"
-                        label="PNFL"
+                        :label="$t('PNFL')"
                         v-mask="'##############'"
                     ></v-text-field>
                   </v-col>
@@ -168,7 +146,7 @@
                         type="text"
                         v-model="editedItem.serePassport"
                         return-masked-value
-                        label="Passport sereasi"
+                        :label="$t('Seree')"
                         uppercase="true"
                         v-mask="'AA'"
                         @input="editedItem.serePassport= editedItem.serePassport.toUpperCase()"
@@ -183,7 +161,7 @@
                         clearable
                           counter
                         v-model="editedItem.numberPassport"
-                        label="Passport raqami"
+                        :label="$t('Number')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -195,7 +173,7 @@
                         clearable
                         counter
                         v-model="editedItem.whoGive"
-                        label="Kim tomonidan berilgan"
+                        :label="$t('Given')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -214,7 +192,7 @@
                         <v-text-field
                             clearable
                             v-model="editedItem.datePassport"
-                            label="Pasport berilgan sana"
+                            :label="$t('Givendate')"
                             prepend-icon="mdi-calendar"
                             readonly
                             v-bind="attrs"
@@ -238,7 +216,7 @@
                         clearable
                         counter
                         v-model="editedItem.language"
-                        label="chet tillarni bilishi"
+                        :label="$t('Languages')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -254,7 +232,7 @@
                         item-text='name'
                         item-value='id'
                         v-model="editedItem.floor"
-                        label="Jinsi"
+                        :label="$t('Floor')"
                     ></v-select>
                   </v-col>
                   <v-col
@@ -266,7 +244,7 @@
                         clearable
                         counter
                         v-model="editedItem.seree"
-                        label="sereasi"
+                        :label="$t('Seree2')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -278,7 +256,7 @@
                         clearable
                         counter
                         v-model="editedItem.number"
-                        label="raqami"
+                        :label="$t('Docnumber')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -297,7 +275,7 @@
                         <v-text-field
                             clearable
                             v-model="editedItem.dateEntry"
-                            label="Qabul qilingan sanasi"
+                            :label="$t('InviteDate')"
                             prepend-icon="mdi-calendar"
                             readonly
                             v-bind="attrs"
@@ -319,7 +297,7 @@
                         clearable
                         counter
                         v-model="editedItem.whoGive2"
-                        label="Kim tomonidan"
+                        :label="$t('Whogive')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -338,7 +316,7 @@
                         <v-text-field
                             clearable
                             v-model="editedItem.birthDay"
-                            label="Tug'ilgan sanasi"
+                            :label="$t('Birthdate')"
                             prepend-icon="mdi-calendar"
                             readonly
                             v-bind="attrs"
@@ -360,7 +338,7 @@
                         clearable
                         counter
                         v-model="editedItem.birthPlace"
-                        label="Tugilgan joyi"
+                        :label="$t('Birthplace')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -374,7 +352,7 @@
                         item-text="name"
                         item-value="id"
                         v-model="editedItem.nationality"
-                        label="Millati"
+                        :label="$t('Nationality')"
                         persistent-hint
                         single-line
                     ></v-select>
@@ -388,7 +366,7 @@
                         clearable
                         counter
                         v-model="editedItem.registeredAllTime"
-                        label="Doimiy yashash joyi"
+                        :label="$t('Live')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -402,7 +380,7 @@
                         item-text="name"
                         item-value="id"
                         v-model="editedItem.region"
-                        label="Viloyati"
+                        :label="$t('Region')"
                         @change="sorted"
                         persistent-hint
                         single-line
@@ -419,7 +397,7 @@
                         item-text="name"
                         item-value="id"
                         v-model="editedItem.city"
-                        label="Shahar"
+                        :label="$t('City')"
                         persistent-hint
                         single-line
                     ></v-select>
@@ -435,7 +413,7 @@
                         item-text="name"
                         item-value="id"
                         v-model="editedItem.district"
-                        label="Tuman"
+                        :label="$t('Districts')"
                         persistent-hint
                         single-line
                     ></v-select>
@@ -448,7 +426,7 @@
                   <v-text-field
                       clearable
                       v-model="editedItem.neighborhood"
-                      label="mahallasi"
+                      :label="$t('Neighborhood')"
                   ></v-text-field>
                 </v-col>
                   <v-col
@@ -462,7 +440,7 @@
                         item-text="name"
                         item-value="id"
                         v-model="editedItem.educational"
-                        label="Ma'lumoti"
+                        :label="$t('Educational')"
                         persistent-hint
                         single-line
                     ></v-select>
@@ -476,7 +454,7 @@
                       clearable
                       counter
                       v-model="editedItem.institution"
-                      label="Oliy bilim yurti"
+                      :label="$t('University')"
                   ></v-text-field>
                 </v-col>
                   <v-col
@@ -488,7 +466,7 @@
                       clearable
                       counter
                       v-model="editedItem.specialty"
-                      label="Mutahasisligi"
+                      :label="$t('Specialization')"
                   ></v-text-field>
                 </v-col>
                   <v-col
@@ -1008,7 +986,7 @@ export default {
   components:{
   },
   data(){ return{
-    languageType: this.$store.state.lan,
+    locale: this.$i18n.locale,
     regionName:'',
     deleteId:'',
     totalElement:'',
@@ -1045,8 +1023,8 @@ export default {
           sortable: true,
           value: 'index',
     },
-      { text: 'Familyasi', value: 'sureName'},
-      {text: 'Ismi',value: 'name',},
+      { text: this.$t('SureName'), value: 'sureName' },
+      { text: 'Ismi',value: 'name',},
       { text: 'Otasining ismi', value: 'lastName' },
       { text: 'PNFL', value: 'pnfl' },
       { text: 'Passport seriasi', value: 'serePassport' },
@@ -1129,9 +1107,6 @@ export default {
 
 
   mounted: async function () {
-    if (this.languageType==='uz') {
-      console.log('ishladiiiiiiii')
-    }
     this.nextperson()
     this.sorted()
     const floorResponse = await axios.get('floor/get', {headers: { 'authorization': this.token }})
@@ -1177,6 +1152,7 @@ export default {
     },
   },
   watch: {
+
     dialog (val) {
       val || this.close()
     },
