@@ -10,7 +10,7 @@ export default new Vuex.Store({
     region:'',
     regionid:'',
     fullname:'',
-    lan:''
+    lan:'uz'
          },
   getters: {
   },

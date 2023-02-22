@@ -19,7 +19,7 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
           <v-list-item-title>
-          <v-list-item  v-text="item.text"></v-list-item>
+          <v-list-item>{{ $t(item.text) }}</v-list-item>
           </v-list-item-title>
         </v-list-item>
 
@@ -30,7 +30,7 @@
               :prepend-icon="item.icon"
           >
             <template v-slot:activator>
-              <v-list-item-title>{{ item.text }}</v-list-item-title>
+              <v-list-item-title>{{ $t(item.text) }}</v-list-item-title>
             </template>
 
             <v-list-item
@@ -41,7 +41,7 @@
               <v-list-item-icon>
                 <v-icon>{{ subLink.icon }}</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>{{ subLink.text }}</v-list-item-title>
+              <v-list-item-title>{{ $t(subLink.text) }}</v-list-item-title>
 
             </v-list-item>
 
@@ -56,7 +56,7 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
             <v-list-item-title>
-              <v-list-item  v-text="item.text"></v-list-item>
+              <v-list-item>{{ $t(item.text) }}</v-list-item>
             </v-list-item-title>
           </v-list-item>
 
@@ -86,7 +86,7 @@
       return{
         selectedItem: 0,
         items: [
-              {icon: 'fas fa-paste', text: 'Qo\'llanma', subLinks:[
+              {icon: 'fas fa-paste', text: 'Directory', subLinks:[
 
               {icon: 'fas fa-map', text: 'Region', path: '/region'},
               {icon: 'fas fa-city', text: 'Districts', path: '/district'},
@@ -97,12 +97,12 @@
 
             ]},
 
-          {icon: 'fa fa-users', text: 'Afg\'on ishtirokchilari', path: '/personalforms'},
-          {icon: 'fas fa-people-carry', text: 'Dra', path: '/dr'},
-          {icon: 'fas fa-bomb', text: 'Yaderniy', path: '/yd'},
+          {icon: 'fa fa-users', text: 'Afghan', path: '/personalforms'},
+          {icon: 'fas fa-people-carry', text: 'AES', path: '/dr'},
+          {icon: 'fas fa-bomb', text: 'Yadro', path: '/yd'},
 
         ],
-      users:[{icon: 'fas fa-users-cog', text: 'Foydalanuvchilar', path: '/users'}],
+      users:[{icon: 'fas fa-users-cog', text: 'Users', path: '/users'}],
 
 
       }

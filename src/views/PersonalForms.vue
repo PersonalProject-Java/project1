@@ -11,7 +11,7 @@
             hide-details
             @input="this.nextperson"
         ></v-text-field>
-      </v-card-title>
+        </v-card-title>
 
             <v-data-table
               :headers="headers"
@@ -34,7 +34,9 @@
                     color="#6F92AA"
                     outlined
                >
-              <v-toolbar-title>Shaxslar : {{totalElement}}</v-toolbar-title>
+              <v-toolbar-title v-if="$store.state.lan==='uz'">Shaxslar : {{totalElement}}</v-toolbar-title>
+              <v-toolbar-title v-if="$store.state.lan==='ru'">Лица : {{totalElement}}</v-toolbar-title>
+              <v-toolbar-title v-if="$store.state.lan==='ўз'">Шахслар : {{totalElement}}</v-toolbar-title>
                  <v-divider
                      class="mx-4"
                      inset
@@ -63,6 +65,7 @@
                >
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
+                      v-if="$store.state.lan==='uz'"
                       color="#336791"
                       dark
                       class="mb-2"
@@ -70,6 +73,26 @@
                       v-on="on"
                   >
                    Yaratish
+                  </v-btn>
+                  <v-btn
+                      v-else-if="$store.state.lan==='ru'"
+                      color="#336791"
+                      dark
+                      class="mb-2"
+                      v-bind="attrs"
+                      v-on="on"
+                  >
+                    Создавать
+                  </v-btn>
+                  <v-btn
+                      v-else-if="$store.state.lan==='ўз'"
+                      color="#336791"
+                      dark
+                      class="mb-2"
+                      v-bind="attrs"
+                      v-on="on"
+                  >
+                    Яратиш
                   </v-btn>
 
           </template>
@@ -984,9 +1007,8 @@ export default {
   name:'personalforms',
   components:{
   },
-  data: () => ({
-
-
+  data(){ return{
+    languageType: this.$store.state.lan,
     regionName:'',
     deleteId:'',
     totalElement:'',
@@ -1009,6 +1031,7 @@ export default {
     page: 1,
     totalPages:0,
     itemsPerPage: 10,
+
     perPageChoices: [
       {text:'5 records/page' , value: 5},
       {text:'10 records/page' , value: 10},
@@ -1102,10 +1125,13 @@ export default {
       name: '',
       region: '',
     },
-  }),
+  }},
 
 
   mounted: async function () {
+    if (this.languageType==='uz') {
+      console.log('ishladiiiiiiii')
+    }
     this.nextperson()
     this.sorted()
     const floorResponse = await axios.get('floor/get', {headers: { 'authorization': this.token }})
@@ -1121,6 +1147,7 @@ export default {
 
     this.nationality = nationalityResponse.data
     this.educational = educationalResponse.data
+
 
   },
   computed: {

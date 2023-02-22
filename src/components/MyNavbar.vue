@@ -5,7 +5,6 @@
         dense
         dark
         fixed
-
     >
       <h4>{{$store.state.fullname}}</h4>
       <v-spacer></v-spacer>
@@ -16,11 +15,11 @@
       </a>
 
       <a id="lanuz2" class=" ml-3" v-bind:class="{stateLang:stateLanЎз}" @click="test('ўз')">
-            ўз
+        ўз
       </a>
 
       <a id="lanuz3" class=" ml-3" v-bind:class="{stateLang:stateLanRU}" @click="test('ru')">
-            ru
+        ru
       </a>
 
       <v-divider
@@ -30,10 +29,12 @@
       ></v-divider>
 
       <v-btn id="logout" v-if="$store.state.token" @click="logOut">
-         chiqish
+         {{ $t('login') }}
       </v-btn>
       <v-btn id="register" to="/register" v-if="$store.state.role === 'SUPERADMIN' || $store.state.role === 'ADMIN'">
-         qo'shish
+        <v-text>
+           {{ $t('add') }}
+        </v-text>
       </v-btn>
 
     </v-app-bar>
@@ -47,9 +48,14 @@ export default {
     return {
       stateLanUz:true,
       stateLanRU:false,
-      stateLanЎз:false
-    }
-  },
+      stateLanЎз:false,
+      login:'Chiqish',
+      add:'Qo\'shish',
+      languageType: this.$store.state.lan
+           }
+        },
+
+//6191
   methods:{
     logOut(){
           sessionStorage.clear(),
@@ -58,22 +64,25 @@ export default {
     },
     test(type){
       if (type==='uz'){
-        this.stateLanUz = true
-        this.stateLanRU = false
-        this.stateLanЎз = false
+        this.$i18n.locale='uz'
+        this.stateLanUz=true
+        this.stateLanRU=false
+        this.stateLanЎз=false
       }
       else if (type === 'ru'){
-        this.stateLanRU = true
-        this.stateLanUz = false
-        this.stateLanЎз = false
+        this.$i18n.locale='ru'
+        this.stateLanRU=true
+        this.stateLanUz=false
+        this.stateLanЎз=false
       }
       else if(type === 'ўз'){
+        this.$i18n.locale='ўз'
+        this.login = 'ЧиҚиш'
+        this.add='Қўшиш'
         this.stateLanЎз = true
         this.stateLanRU = false
         this.stateLanUz = false
       }
-
-      console.log("ishladi")
     }
   },
 }
@@ -138,7 +147,7 @@ export default {
     #register{
       margin-left: 1%;
       background-color: black;
-      width: 4%;
+      width: 5%;
       height: 55%;
       font-size: 12px;
       transition: 0.4s;
