@@ -91,7 +91,7 @@
                         counter
                         clearable
                         v-model="editedItem.lastName"
-                        label="Otasining ismi"
+                        :label="$t('Lastname')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -478,7 +478,7 @@
                       clearable
                       counter
                       v-model="editedItem.workPlace"
-                      label="Ish joyi"
+                      :label="$t('Workplace')"
                   ></v-text-field>
                 </v-col>
                   <v-col
@@ -489,7 +489,7 @@
                   <v-text-field
                       clearable
                       v-model="editedItem.position"
-                      label="Egalla turgan lavozimi"
+                      :label="$t('PositionHeld')"
                   ></v-text-field>
                 </v-col>
                   <v-col
@@ -500,7 +500,7 @@
                   <v-text-field
                       clearable
                       v-model="editedItem.familySituation"
-                      label="Oilaviy ahvoli"
+                      :label="$t('FamilyStatus')"
                   ></v-text-field>
                 </v-col>
                   <v-col
@@ -511,7 +511,7 @@
                   <v-text-field
                       clearable
                       v-model="editedItem.conviction"
-                      label="Conviction"
+                      :label="$t('Conviction')"
                   ></v-text-field>
                 </v-col>
                   <v-col
@@ -522,7 +522,7 @@
                   <v-text-field
                       clearable
                       v-model="editedItem.socialBackground"
-                      label="Ijtimoiy kelib chiqishi"
+                      :label="$t('SocialOrigin')"
                   ></v-text-field>
                 </v-col>
                   <v-col
@@ -533,7 +533,7 @@
                     <v-text-field
                         clearable
                         v-model="editedItem.acceptance"
-                        label="acceptance"
+                        :label="$t('Аcceptance')"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -544,7 +544,7 @@
                   <v-text-field
                       clearable
                       v-model="editedItem.removed"
-                      label="Qayta"
+                      :label="$t('Again')"
                   ></v-text-field>
                 </v-col>
                   <v-col
@@ -555,7 +555,7 @@
                   <v-text-field
                       clearable
                       v-model="editedItem.mukofot"
-                      label="Mukofot"
+                      :label="$t('Award')"
                   ></v-text-field>
                 </v-col>
                   <v-col
@@ -566,7 +566,7 @@
                   <v-text-field
                       clearable
                       v-model="editedItem.injury"
-                      label="Jarohatlari"
+                      :label="$t('Injuries')"
                   ></v-text-field>
                 </v-col>
                   <v-col
@@ -577,7 +577,7 @@
                   <v-text-field
                       clearable
                       v-model="editedItem.characters"
-                      label="characters"
+                      :label="$t('Сharacters')"
                   ></v-text-field>
                 </v-col>
 
@@ -592,25 +592,25 @@
                   text
                   @click="close"
               >
-                Yopish
+                {{ $t('Close') }}
               </v-btn>
               <v-btn
                   color="blue darken-1"
                   text
                   @click="save"
               >
-                Saqlash
+                {{ $t('Save') }}
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
                <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="text-h5">Siz rostan ham ushbu ma'lumotni o'chirshga rozimisiz ?</v-card-title>
+            <v-card-title class="text-h5">{{ $t('AgreeText')}}</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Yopish</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">Roziman</v-btn>
+              <v-btn color="blue darken-1" text @click="closeDelete">{{ $t('Close')}}</v-btn>
+              <v-btn color="blue darken-1" text @click="deleteItemConfirm">{{ $t('Agree')}}</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -618,22 +618,25 @@
                <v-dialog v-model="view" persistent>
                     <v-card>
                       <v-card-title>
-                        <span class="text-h5">Shaxsning ma'lumotlari</span>
+                        <span class="text-h5">{{ $t('PersonalInformation') }}</span>
                       </v-card-title>
 
                       <v-card-text>
                         <v-container>
                           <div class="view">
                           <v-row>
-                            <v-col cols="12" sm="6" md="2">
-                              <label>Ismi</label>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                md="2">
+                              <label>{{$t('Name')}}</label>
                               <li>{{editedItem.name}}</li>
                             </v-col>
                             <v-col
                                 cols="12"
                                 sm="6"
                                 md="2"
-                            ><label>Otasining ismi</label>
+                            ><label>{{ $t('Lastname')}}</label>
                             <li>{{editedItem.lastName}}</li>
                             </v-col>
                             <v-col
@@ -641,7 +644,7 @@
                                 sm="6"
                                 md="2"
                             >
-                        <label>Familyasi</label>
+                        <label>{{ $t('SureName')}}</label>
                               <li>{{editedItem.sureName}}</li>
                             </v-col>
                             <v-col
@@ -649,7 +652,7 @@
                                 sm="6"
                                 md="2"
                             >
-                          <label>PNFL</label>
+                          <label>{{ $t('PNFL') }}</label>
                               <li>{{editedItem.pnfl}}</li>
                             </v-col>
                             <v-col
@@ -657,7 +660,7 @@
                                 sm="6"
                                 md="2"
                             >
-                            <label>Passport sereasi</label>
+                            <label>{{ $t('Seree')}}</label>
                               <li>{{editedItem.serePassport}}</li>
                             </v-col>
                             <v-col
@@ -665,7 +668,7 @@
                                 sm="6"
                                 md="2"
                             >
-                          <label>Passport raqami</label>
+                          <label>{{ $t('Number')}}</label>
                               <li>{{editedItem.numberPassport}}</li>
                             </v-col>
                             <v-col
@@ -673,7 +676,7 @@
                                 sm="6"
                                 md="2"
                             >
-                            <label>Kim tomonidan berilgan</label>
+                            <label>{{ $t('Given') }}</label>
                               <li>{{editedItem.whoGive}}</li>
                             </v-col>
                             <v-col
@@ -681,7 +684,7 @@
                                 sm="6"
                                 md="2"
                             >
-                              <label>Berilgan sanasi</label>
+                              <label>{{ $t('Givendate') }}</label>
                               <li>{{editedItem.datePassport}}</li>
 
 
@@ -691,7 +694,7 @@
                                 sm="6"
                                 md="2"
                             >
-                             <label>Chet tillarini bilishi</label>
+                             <label>{{ $t('Languages') }}</label>
                               <li>{{editedItem.language}}</li>
                             </v-col>
                             <v-col
@@ -700,7 +703,7 @@
                                 sm="6"
                                 md="2"
                             >
-                            <label>Jinsi</label>
+                            <label>{{ $t('Floor') }}</label>
 
                               <li v-if="editedItem.floor">{{editedItem.floor.name}}</li>
 
@@ -710,7 +713,7 @@
                                 sm="6"
                                 md="2"
                             >
-                              <label>Sereasi</label>
+                              <label>{{ $t('Seree2') }}</label>
                               <li>{{editedItem.seree}}</li>
                             </v-col>
                             <v-col
@@ -718,7 +721,7 @@
                                 sm="6"
                                 md="2"
                             >
-                             <label>Raqami</label>
+                             <label>{{ $t('Docnumber') }}</label>
                               <li>{{editedItem.number}}</li>
                             </v-col>
                             <v-col
@@ -726,7 +729,7 @@
                                 sm="6"
                                 md="2"
                             >
-                              <label>Qabul qilingan sanasi</label>
+                              <label>{{ $t('InviteDate') }}</label>
                               <li>{{editedItem.dateEntry}}</li>
                             </v-col>
                             <v-col
@@ -734,7 +737,7 @@
                                 sm="6"
                                 md="2"
                             >
-                             <label>Kim tomonidan berilgan</label>
+                             <label>{{ $t('Whogive') }}</label>
                               <li>{{editedItem.whoGive2}}</li>
                             </v-col>
                             <v-col
@@ -742,7 +745,7 @@
                                 sm="6"
                                 md="2"
                             >
-                              <label>Tug'ilgan sanasi</label>
+                              <label>{{ $t('Birthdate') }}</label>
                               <li>{{editedItem.birthDay}}</li>
                             </v-col>
                             <v-col
@@ -750,7 +753,7 @@
                                 sm="6"
                                 md="2"
                             >
-                              <label>Tug'ilgan joyi</label>
+                              <label>{{ $t('Birthplace') }}</label>
                               <li>{{editedItem.birthPlace}}</li>
                             </v-col>
                             <v-col
@@ -758,7 +761,7 @@
                                 sm="6"
                                 md="2"
                             >
-                             <label>Millati</label>
+                             <label>{{ $t('Nationality') }}</label>
                               <li v-if="editedItem.nationality">{{editedItem.nationality.name}}</li>
                             </v-col>
                             <v-col
@@ -766,7 +769,7 @@
                                 sm="6"
                                 md="2"
                             >
-                             <label>Doimiy yashash joyi</label>
+                             <label>{{ $t('Live') }}</label>
                               <li>{{editedItem.registeredAllTime}}</li>
                             </v-col>
                             <v-col
@@ -774,7 +777,7 @@
                                 sm="6"
                                 md="2"
                             >
-                              <label>Viloyati</label>
+                              <label>{{ $t('Region') }}</label>
                               <li v-if="editedItem.region">{{editedItem.region.name}}</li>
                             </v-col>
                             <v-col
@@ -782,7 +785,7 @@
                                 sm="6"
                                 md="2"
                             >
-                            <label>Shahar</label>
+                            <label>{{ $t('City') }}</label>
                               <li v-if="editedItem.city">{{editedItem.city.name}}</li>
                             </v-col>
                             <v-col
@@ -790,7 +793,7 @@
                                 sm="6"
                                 md="2"
                             >
-                             <label>Tuman</label>
+                             <label>{{ $t('Districts') }}</label>
                               <li v-if="editedItem.district">{{editedItem.district.name}}</li>
                             </v-col>
                             <v-col
@@ -798,7 +801,7 @@
                                 sm="6"
                                 md="2"
                             >
-                              <label>Mahallasi</label>
+                              <label>{{ $t('Neighborhood') }}</label>
                               <li>{{editedItem.neighborhood}}</li>
                             </v-col>
                             <v-col
@@ -806,7 +809,7 @@
                                 sm="6"
                                 md="2"
                             >
-                              <label>Ma'lumoti</label>
+                              <label>{{ $t('Educational') }}</label>
                               <li v-if="editedItem.educational">{{editedItem.educational.name}}</li>
                             </v-col>
                             <v-col
@@ -814,7 +817,7 @@
                                 sm="6"
                                 md="2"
                             >
-                            <label>Bilim yurti</label>
+                            <label>{{ $t('University') }}</label>
                               <li>{{editedItem.institution}}</li>
                             </v-col>
                             <v-col
@@ -822,7 +825,7 @@
                                 sm="6"
                                 md="2"
                             >
-                              <label>Mutahasisligi</label>
+                              <label>{{ $t('Specialization') }}</label>
                               <li>{{editedItem.specialty}}</li>
                             </v-col>
                             <v-col
@@ -830,7 +833,7 @@
                                 sm="6"
                                 md="2"
                             >
-                             <label>Ish joyi</label>
+                             <label>{{ $t('Workplace') }}</label>
                               <li>{{editedItem.workPlace}}</li>
                             </v-col>
                             <v-col
@@ -838,7 +841,7 @@
                                 sm="6"
                                 md="4"
                             >
-                             <label>Egallab turgan lavozimi</label>
+                             <label>{{ $t('PositionHeld') }}</label>
                               <li>{{editedItem.position}}</li>
                             </v-col>
                             <v-col
@@ -846,7 +849,7 @@
                                 sm="6"
                                 md="4"
                             >
-                             <label>Oilaviy ahvoli</label>
+                             <label>{{ $t('FamilyStatus') }}</label>
                               <li>{{editedItem.familySituation}}</li>
                             </v-col>
                             <v-col
@@ -854,7 +857,7 @@
                                 sm="6"
                                 md="4"
                             >
-                             <label>Sudlanganligi</label>
+                             <label>{{ $t('Conviction') }}</label>
                               <li>{{editedItem.conviction}}</li>
                             </v-col>
                             <v-col
@@ -862,7 +865,7 @@
                                 sm="6"
                                 md="4"
                             >
-                             <label>Ijtimoiy kelib chiqishi</label>
+                             <label>{{ $t('SocialOrigin') }}</label>
                               <li>{{editedItem.socialBackground}}</li>
                             </v-col>
                             <v-col
@@ -870,7 +873,7 @@
                                 sm="6"
                                 md="4"
                             >
-                             <label>Qabul qilingan</label>
+                             <label>{{ $t('Аcceptance') }}</label>
                               <li>{{editedItem.acceptance}}</li>
                             </v-col>
                             <v-col
@@ -878,7 +881,7 @@
                                 sm="6"
                                 md="4"
                             >
-                              <label>Hisobdan chiqarilgan</label>
+                              <label>{{ $t('Again') }}</label>
                               <li>{{editedItem.removed}}</li>
                             </v-col>
                             <v-col
@@ -886,7 +889,7 @@
                                 sm="6"
                                 md="4"
                             >
-                              <label>Mukofotlari</label>
+                              <label>{{ $t('Award') }}</label>
                               <li>{{editedItem.mukofot}}</li>
                             </v-col>
                             <v-col
@@ -894,7 +897,7 @@
                                 sm="6"
                                 md="4"
                             >
-                            <label>Jarohatlari</label>
+                            <label>{{ $t('Injuries') }}</label>
                               <li>{{editedItem.injury}}</li>
                             </v-col>
                             <v-col
@@ -902,7 +905,7 @@
                                 sm="6"
                                 md="4"
                             >
-                              <label>Belgilari</label>
+                              <label>{{ $t('Сharacters') }}</label>
                               <li>{{editedItem.characters}}</li>
                             </v-col>
                           </v-row>
@@ -917,7 +920,7 @@
                             text
                             @click="close"
                         >
-                          Yopish
+                          {{ $t('Close') }}
                         </v-btn>
                 </v-card-actions>
                     </v-card>
@@ -1018,22 +1021,22 @@ export default {
 
     headers: [
      {
-          text: 'T/R',
+          text: this.$t('Orders'),
           align: 'start',
           sortable: true,
           value: 'index',
     },
       { text: this.$t('SureName'), value: 'sureName' },
-      { text: 'Ismi',value: 'name',},
-      { text: 'Otasining ismi', value: 'lastName' },
-      { text: 'PNFL', value: 'pnfl' },
-      { text: 'Passport seriasi', value: 'serePassport' },
-      { text: 'Passport raqami', value: 'numberPassport' },
+      { text: this.$t('Name'),value: 'name',},
+      { text: this.$t('Lastname'), value: 'lastName' },
+      { text: this.$t('PNFL'), value: 'pnfl' },
+      { text: this.$t('Seree'), value: 'serePassport' },
+      { text: this.$t('Number'), value: 'numberPassport' },
       // { text: 'floor', value: 'floor.name' },
-      { text: 'Millati', value: 'nationality.name' },
-      { text: 'Viloyati', value: 'region.name' },
-      { text: 'Shahar', value: 'city.name' },
-      { text: 'Tuman', value: 'district.name' },
+      { text: this.$t('Nationality'), value: 'nationality.name' },
+      { text: this.$t('Region'), value: 'region.name' },
+      { text: this.$t('City'), value: 'city.name' },
+      { text: this.$t('Districts'), value: 'district.name' },
 /*    { text: 'Seree', value: 'seree' },
       { text: 'number', value: 'number' },
       { text: 'DateEntry', value: 'dateEntry' },
@@ -1057,7 +1060,7 @@ export default {
       { text: 'injury', value: 'injury' },
       { text: 'Characters', value: 'characters' },
       { text: 'photo', value: 'photo' },*/
-      { text: 'Thrirlash', value: 'actions', sortable: false },
+      { text: this.$t('Actions'), value: 'actions', sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
@@ -1139,6 +1142,7 @@ export default {
     totalRecords() {
       return this.desserts.length
     },
+
     pageCount() {
       return this.totalPages
       // this.totalRecords / this.itemsPerPage
@@ -1148,11 +1152,11 @@ export default {
 
 
     formTitle () {
-      return this.editedIndex === -1 ? 'Yangi yaratish' : 'Shaxsning ma\'lumotlarini o\'zgartirish'
+      return this.editedIndex === -1 ? this.$t('Create') : this.$t('Edit')
     },
   },
-  watch: {
 
+  watch: {
     dialog (val) {
       val || this.close()
     },
@@ -1166,6 +1170,7 @@ export default {
       immediate: true
     }
   },
+
   created () {
     this.initialize()
   },

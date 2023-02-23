@@ -6,7 +6,7 @@
         <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
-            label="Qidirish"
+            :label="$t('Search')"
             single-line
             hide-details
         ></v-text-field>
@@ -22,7 +22,7 @@
           <v-toolbar
               flat
           >
-            <v-toolbar-title>Foydalanuvchilar</v-toolbar-title>
+            <v-toolbar-title>{{ $t('Users')}}</v-toolbar-title>
             <v-divider
                 class="mx-4"
                 inset
@@ -53,7 +53,7 @@
                             item-text="name"
                             item-value="id"
                             v-model="editedItem.region"
-                            label="Viloyati"
+                            :label="$t('Region')"
                             @change="sorted"
                         ></v-select>
                       </v-col>
@@ -69,7 +69,7 @@
                             item-text="name"
                             item-value="id"
                             v-model="editedItem.district"
-                            label="Tuman"
+                            :label="$t('Districts')"
                         ></v-select>
                       </v-col>
                       <v-col
@@ -81,7 +81,7 @@
                             clearable
                             outlined
                             v-model="editedItem.username"
-                            label="Username"
+                            :label="$t('Username')"
 
                         ></v-text-field>
                       </v-col>
@@ -94,7 +94,7 @@
                             clearable
                             outlined
                             v-model="editedItem.fullName"
-                            label="To'liq ismi"
+                            :label="$t('Fullname')"
                         ></v-text-field>
                       </v-col>
                       <v-col
@@ -108,7 +108,7 @@
                             :type="show1 ? 'text' : 'password'"
                             @click:append="show1 = !show1"
                             v-model="editedItem.passwordd"
-                            label="Yangi parol kiriting"
+                            :label="$t('Newpassword')"
                             persistent-hint
                             single-line
                         ></v-text-field>
@@ -124,25 +124,25 @@
                       text
                       @click="close"
                   >
-                    Bekor qilish
+                    {{ $t('Close') }}
                   </v-btn>
                   <v-btn
                       color="blue darken-1"
                       text
                       @click="save"
                   >
-                    Saqlash
+                    {{ $t('Save') }}
                   </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
             <v-dialog v-model="dialogDelete" max-width="500px">
               <v-card>
-                <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                <v-card-title class="text-h5">{{ $t('AgreeText')}}</v-card-title>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="closeDelete">Bekor qilish</v-btn>
-                  <v-btn color="blue darken-1" text @click="deleteItemConfirm">Ok</v-btn>
+                  <v-btn color="blue darken-1" text @click="closeDelete">{{ $t('Close')}}</v-btn>
+                  <v-btn color="blue darken-1" text @click="deleteItemConfirm">{{ $t('Agree')}}</v-btn>
                   <v-spacer></v-spacer>
                 </v-card-actions>
               </v-card>
@@ -183,6 +183,7 @@
             Reset
           </v-btn>
         </template>
+
       </v-data-table>
 
     </v-col>
@@ -253,7 +254,7 @@ export default {
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'Yangi yaratish' : 'O\'zgartirish'
+      return this.editedIndex === -1 ? this.$t('Create') : this.$t('Edit')
     },
   },
 
