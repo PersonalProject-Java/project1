@@ -1198,7 +1198,7 @@ export default {
         body: tableData,
       });
 
-      doc.save('desserts.pdf');
+      doc.save('Afg\'on_Ishtirokchilari.pdf');
     },
 
 
@@ -1218,7 +1218,7 @@ export default {
         Shahar: disserts.city ? disserts.city.name : null,
         Millati: disserts.nationality ? disserts.nationality.name : null,
       }))
-     this.exportToExcel(excelData, 'Desserts');
+     this.exportToExcel(excelData, 'Afg\'on_Ishtirokchilari');
     },
     exportToExcel(data, filename) {
       const worksheet = utils.json_to_sheet(data);

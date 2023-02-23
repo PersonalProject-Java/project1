@@ -6,7 +6,7 @@
         <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
-            label="Qidirish"
+            :label="$t('Search')"
             single-line
             hide-details
         ></v-text-field>
@@ -22,7 +22,7 @@
           <v-toolbar
               flat
           >
-            <v-toolbar-title>Shaharlar</v-toolbar-title>
+            <v-toolbar-title>{{$t('City')}}</v-toolbar-title>
             <v-divider
                 class="mx-4"
                 inset
@@ -41,7 +41,7 @@
                     v-bind="attrs"
                     v-on="on"
                 >
-                  Yangi yaratish
+                  {{$t('Create')}}
                 </v-btn>
               </template>
               <v-card>
@@ -57,7 +57,7 @@
                           item-text="name"
                           item-value="id"
                           v-model="editedItem.region"
-                          label="Viloyati"
+                          :label="$t('Region')"
                           persistent-hint
                           single-line
                       ></v-select>
@@ -68,7 +68,7 @@
                       >
                         <v-text-field
                             v-model="editedItem.name"
-                            label="Shahar nomi"
+                            :label="$t('City')"
                         ></v-text-field>
                       </v-col>
 
@@ -84,25 +84,25 @@
                       text
                       @click="close"
                   >
-                    Cancel
+                    {{$t('Close')}}
                   </v-btn>
                   <v-btn
                       color="blue darken-1"
                       text
                       @click="save"
                   >
-                    Save
+                    {{$t('Save')}}
                   </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
             <v-dialog v-model="dialogDelete" max-width="500px">
               <v-card>
-                <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                <v-card-title class="text-h5">{{ $t('AgreeText')}}</v-card-title>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                  <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                  <v-btn color="blue darken-1" text @click="closeDelete">{{ $t('Close')}}</v-btn>
+                  <v-btn color="blue darken-1" text @click="deleteItemConfirm">{{ $t('Agree')}}</v-btn>
                   <v-spacer></v-spacer>
                 </v-card-actions>
               </v-card>
@@ -183,7 +183,7 @@ export default {
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'Yangi yaratish' : 'O\'zgartirish'
+      return this.editedIndex === -1 ? this.$t('Create') : this.$t('Edit')
     },
   },
 
