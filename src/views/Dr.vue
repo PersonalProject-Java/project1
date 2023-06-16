@@ -1299,27 +1299,37 @@ export default {
 
     async save() {
       if (this.editedIndex > -1) {
-        console.log('edit page')
-        if (isNaN(this.editedItem.floor)){this.editedItem.floor = this.editedItem.floor.id}
-        if (isNaN(this.editedItem.region)){this.editedItem.region = this.editedItem.region.id}
-        if (isNaN(this.editedItem.district)){this.editedItem.district = this.editedItem.district.id}
-        if (isNaN(this.editedItem.city)){this.editedItem.city = this.editedItem.city.id}
-        if (isNaN(this.editedItem.educational)){this.editedItem.educational = this.editedItem.educational.id}
-        if (isNaN(this.editedItem.nationality)){this.editedItem.nationality = this.editedItem.nationality.id}
-        console.log(this.editedItem)
+        if (typeof this.editedItem.region === 'object' && this.editedItem.region !== null) {
+          this.editedItem.region = this.editedItem.region.id;
+        }
+        if (typeof this.editedItem.district === 'object' && this.editedItem.district !== null) {
+          this.editedItem.district = this.editedItem.district.id;
+        }
+        if (typeof this.editedItem.city === 'object' && this.editedItem.city !== null) {
+          this.editedItem.city = this.editedItem.city.id;
+        }
+        if (typeof this.editedItem.floor === 'object' && this.editedItem.floor !== null) {
+          this.editedItem.floor = this.editedItem.floor.id;
+        }
+        if (typeof this.editedItem.educational === 'object' && this.editedItem.educational !== null) {
+          this.editedItem.educational = this.editedItem.educational.id;
+        }
+        if (typeof this.editedItem.nationality === 'object' && this.editedItem.nationality !== null) {
+          this.editedItem.nationality = this.editedItem.nationality.id;
+        }
+
         await axios.put('dr/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
         this.close()
         this.nextperson()
       }
       else{
-        console.log(this.editedItem.pnfl.length)
         if (this.editedItem.pnfl.length<14){
           alert("Siz ma'lumotlarni to'ldirmadingiz")
         }else {
           await axios.post('dr/add', this.editedItem, {headers: {'authorization': this.token}})
-          this.desserts.push(this.editedItem)
           this.close()
+          this.nextperson()
         }
       }
 
