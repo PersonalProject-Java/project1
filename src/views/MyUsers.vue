@@ -153,7 +153,7 @@
         <template v-slot:item.switch="{ item }">
           <v-switch
               v-model="item.enabled"
-              :label="`holati : ${ item.enabled }`"
+              :label="`${ item.enabled ? 'Faol' : 'Faol emas' }`"
               class="pa-3"
               @click="changedStatus(item)"
           ></v-switch>

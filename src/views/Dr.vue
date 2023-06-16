@@ -1278,6 +1278,7 @@ export default {
       const districtResponse = await axios.delete('dr/delete/'+this.deleteId, {headers: {'authorization': this.token}})
       this.desserts.splice(this.editedIndex, 1)
       this.closeDelete()
+      this.nextperson()
     },
 
     close () {
