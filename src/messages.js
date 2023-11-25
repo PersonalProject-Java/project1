@@ -160,7 +160,7 @@ export default {
         FamilyStatus:'Оилавий ахволи',
         Conviction:'Судланганлиги',
         SocialOrigin:'Ижтимоий келиб чиқиши',
-        Аcceptance:'Қабул қилинган',
+        Аcceptance:'Қабул Қилинган',
         Again:'Хисобдан чиқарилган',
         Award:'Мукофот',
         Injuries:'Жарохатлар',

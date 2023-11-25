@@ -1,14 +1,14 @@
 <template >
   <v-app id="inspire" v-if="$store.state.token">
     <v-content>
-      <v-container class="fill-height" fluid>
+      <v-container class="my-custom-container" fluid>
         <v-row justify="center">
-          <v-col cols="12">
-            <v-card class="elevation-12 mr-16">
-              <v-window>
+          <v-col cols="8">
+            <v-card class="mr-16">
+            <v-window>
                   <v-window-item>
-                  <v-row class="fill-height">
-                    <v-col cols="12" md="4" class="card_color">
+                  <v-row>
+                    <v-col cols="8" md="4" class="card_color">
                       <v-card-text class="white--text mt-12 text">
                         <h1 class="display-1">Foydalanuvchilarni ro'yxatdan o'tkazish oynasi</h1>
                         <h5
@@ -16,7 +16,7 @@
                         >kiritgan parolingizni yodda salqashni unutmang</h5>
                       </v-card-text>
                       </v-col>
-                    <v-col cols="12" md="8">
+                    <v-col cols="6" md="8">
                       <v-card-text class="mt-12">
                         <div class="text-center mt-4">
                           <v-img
@@ -54,6 +54,17 @@
                               persistent-hint
                               single-line
                           ></v-select>
+
+                          <v-select
+                              prepend-icon="mdi-domain"
+                              :items="city"
+                              item-text="name"
+                              v-model="data.city_id"
+                              item-value="id"
+                              label="Shahar"
+                              persistent-hint
+                              single-line
+                          ></v-select>
                           <v-select
                               prepend-icon="mdi-domain"
                               :items="district"
@@ -79,6 +90,18 @@
                               type="password"
                               color="#27496D"
                           />
+
+                          <v-select
+                              prepend-icon="mdi-city"
+                              :items="roles"
+                              v-model="data.role_id"
+                              item-text="name"
+                              item-value="id"
+                              label="Role"
+                              persistent-hint
+                              single-line
+                          ></v-select>
+
                           <div class="text-center mb-5">
                             <v-btn @click.prevent="submit" color="#27496D" dark>SAQLASH</v-btn>
                           </div>
@@ -106,12 +129,16 @@ export default {
         fullName: "",
         username: "",
         region_id:"",
+        city_id:"",
         district_id:"",
         password: "",
-        prePassword: ""
+        prePassword: "",
+        role_id:""
       },
       region:'',
+      city:'',
       district:'',
+      roles:'',
       token: 'Bearer ' + sessionStorage.getItem('token'),
     }
   },
@@ -122,16 +149,24 @@ export default {
   mounted: async function () {
     const regionResponse = await axios.get('region/get/'+this.$store.state.regionid, {headers: { 'authorization': this.token }})
     this.region = regionResponse.data
+    const roleResponse = await axios.get('role/get',{headers: { 'authorization': this.token }})
+    this.roles = roleResponse.data
     },
+
   methods:{
     //https://webdevchallenges.com/persist-access-token-with-vue-js   //  FOR FULL LOGIN URL
     submit(){
       if (this.data.district_id===''){this.data.district_id=null}
+      if (this.data.city_id===''){this.data.city_id=null}
       console.log(this.data)
       let response =  axios.post('auth/register',this.data,{headers: { 'authorization': this.token }});
       this.data=''
     },
+
+
     async districtfunction() {
+      const cityResponse = await axios.get('city/get/'+this.data.region_id, {headers: {'authorization': this.token}})
+      this.city = cityResponse.data
       const districtResponse = await axios.get('district/get/'+this.data.region_id, {headers: {'authorization': this.token}})
       this.district = districtResponse.data
     },
