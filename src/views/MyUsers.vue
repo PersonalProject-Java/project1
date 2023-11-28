@@ -31,7 +31,10 @@
             <v-spacer></v-spacer>
             <v-dialog
                 v-model="dialog"
-                max-width="1200px"
+                max-width="500px"
+                persistent
+                overlay-color="blue"
+
             >
               <v-card>
                 <v-card-title>
@@ -42,9 +45,7 @@
                   <v-container>
                     <v-row>
                       <v-col
-                          cols="12"
-                          sm="6"
-                          md="2"
+
                       >
                         <v-select
                             clearable
@@ -56,12 +57,6 @@
                             :label="$t('Region')"
                             @change="sorted"
                         ></v-select>
-                      </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="2"
-                      >
                         <v-select
                             clearable
                             outlined
@@ -71,12 +66,24 @@
                             v-model="editedItem.district"
                             :label="$t('Districts')"
                         ></v-select>
-                      </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="2"
-                      >
+                        <v-select
+                            clearable
+                            outlined
+                            :items="city"
+                            item-text="name"
+                            item-value="id"
+                            v-model="editedItem.city"
+                            :label="$t('Shahar')"
+                        ></v-select>
+                        <v-select
+                            clearable
+                            outlined
+                            :items="role"
+                            item-text="name"
+                            item-value="id"
+                            v-model="editedItem.role"
+                            :label="$t('Role')"
+                        ></v-select>
                         <v-text-field
                             clearable
                             outlined
@@ -84,24 +91,12 @@
                             :label="$t('Username')"
 
                         ></v-text-field>
-                      </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="2"
-                      >
                         <v-text-field
                             clearable
                             outlined
                             v-model="editedItem.fullName"
                             :label="$t('Fullname')"
                         ></v-text-field>
-                      </v-col>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                      >
                         <v-text-field
                             outlined
                             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -200,6 +195,8 @@ export default {
     search:'',
     region:'',
     district:'',
+    city:'',
+    role:'',
     deleteId:'',
     statusId:'',
     switch1:'faol',
@@ -214,10 +211,12 @@ export default {
     },
 
 
+
     headers: [
 
       { text: 'Role', value: 'role.name' },
       { text: 'Viloyat', value: 'region.name' },
+      { text: 'Shahar', value: 'city.name' },
       { text: 'Tuman', value: 'district.name' },
       { text: 'To\'liq ismi', value: 'fullName' },
       { text: 'username', value: 'username' },
@@ -228,11 +227,22 @@ export default {
     desserts: [],
     editedIndex: -1,
     editedItem: {
-      region:'',
-      district:'',
-      username:'',
       fullName:'',
+      username:'',
+      region:'',
+      city:'',
+      district:'',
+      role:'',
       passwordd:'',
+    },
+    daata:{
+      fullName:"Sirojiddin",
+      username:"Sirojiddin",
+      region:9,
+      city:null,
+      district:null,
+      role:195,
+      passwordd:"siroj1294"
     },
     defaultItem: {
       name: '',
@@ -246,9 +256,14 @@ export default {
     const response = await axios.get('user/get', {headers: { 'authorization': this.token }})
     const regionResponse = await axios.get('region/get/', {headers: { 'authorization': this.token }})
     const districtResponse = await axios.get('district/get/'+this.editedItem.region, {headers: {'authorization': this.token}})
+    const cityResponse = await axios.get('city/get/'+this.editedItem.region, {headers: {'authorization': this.token}})
+    const roleResponse = await axios.get('role/get/'+this.editedItem.role, {headers: {'authorization': this.token}})
     this.region = regionResponse.data
+
     this.desserts = response.data
     this.district = districtResponse.data
+    this.city = cityResponse.data
+    this.role = roleResponse.data
   },
 
 
@@ -274,21 +289,39 @@ export default {
   methods: {
     async sorted() {
       const districtResponse = await axios.get('district/get/'+this.editedItem.region, {headers: {'authorization': this.token}})
+      const cityResponse = await axios.get('city/get/'+this.editedItem.region, {headers: {'authorization': this.token}})
       this.district = districtResponse.data
+      this.city = cityResponse.data
     },
 
     async changedStatus(item) {
       this.statusId = item.id
-      const response = await axios.put('user/edit/status/'+this.statusId,this.editedItem, {headers: {'authorization': this.token}})
+      await axios.put('user/edit/status/'+this.statusId,this.editedItem, {headers: {'authorization': this.token}})
     },
 
     initialize () {
     },
 
-    editItem (item) {
+
+
+
+
+    filterFields(originalObject, fieldsToInclude) {
+      console.log(fieldsToInclude)
+  return fieldsToInclude.reduce((filteredObject, field) => {
+    if (originalObject.hasOwnProperty(field)) {
+      filteredObject[field] = originalObject[field];
+    }
+    return filteredObject;
+  }, {});
+},
+editItem (item) {
+      // this.editedItem = Object.assign({}, item)
+      // this.dialog = true
       this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
+      const fieldsToInclude = ['id','region', 'city', 'district', 'username', 'fullName', 'passwordd', 'role'];
+      this.editedItem = this.filterFields(item, fieldsToInclude);
+      this.dialog = true;
     },
 
     deleteItem (item) {
@@ -324,7 +357,10 @@ export default {
       if (this.editedIndex > -1) {
         if (isNaN(this.editedItem.region)){this.editedItem.region = this.editedItem.region.id}
         if (isNaN(this.editedItem.district)){this.editedItem.district = this.editedItem.district.id}
-         await axios.put('user/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
+        if (isNaN(this.editedItem.city)){this.editedItem.city = this.editedItem.city.id}
+        if (isNaN(this.editedItem.role)){this.editedItem.role = this.editedItem.role.id}
+
+        await axios.put('user/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
 
       } else {
