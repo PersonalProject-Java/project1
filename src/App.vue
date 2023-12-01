@@ -26,6 +26,8 @@ export default {
         this.$store.commit('changeRole',response.data.role.name)
         sessionStorage.setItem("region", response.data.region.name)
         this.$store.commit('setregionid',response.data.region.id)
+        this.$store.commit('setcityid',response.data.city.id)
+        this.$store.commit('setdistrictid',response.data.district.id)
 
       });
     }

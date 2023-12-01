@@ -9,6 +9,8 @@ export default new Vuex.Store({
     role:'',
     region:'',
     regionid:'',
+    cityid:'',
+    districtid:'',
     fullname:'',
          },
   getters: {
@@ -16,8 +18,15 @@ export default new Vuex.Store({
   mutations: {
     changeRole(state,payload){
      return state.role = payload
-    },    setregionid(state,payload){
+    },
+    setregionid(state,payload){
      return state.regionid = payload
+    },
+    setcityid(state,payload){
+     return state.cityid = payload
+    },
+    setdistrictid(state,payload){
+     return state.districtid = payload
     },
     setFullName(state,payload){
       return state.fullname = payload

@@ -1114,12 +1114,16 @@ export default {
     this.sorted()
     const floorResponse = await axios.get('floor/get', {headers: { 'authorization': this.token }})
     const regionResponse = await axios.get('region/get/'+this.$store.state.regionid, {headers: { 'authorization': this.token }})
+    const cityResponse = await axios.get('city/get/'+this.$store.state.regionid, {headers: { 'authorization': this.token }})
+    const districtResponse = await axios.get('district/get/'+this.$store.state.regionid, {headers: { 'authorization': this.token }})
     const nationalityResponse = await axios.get('nationality/get', {headers: { 'authorization': this.token }})
 
 
     const educationalResponse = await axios.get('educational/get', {headers: { 'authorization': this.token }})
     this.floor = floorResponse.data
     this.region = regionResponse.data
+    this.city = cityResponse.data
+    this.district = districtResponse.data
 
 
 

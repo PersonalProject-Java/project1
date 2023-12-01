@@ -76,6 +76,7 @@
                             :label="$t('Shahar')"
                         ></v-select>
                         <v-select
+                            v-if="$store.state.role ==='SUPERADMIN'"
                             clearable
                             outlined
                             :items="role"

@@ -92,6 +92,7 @@
                           />
 
                           <v-select
+                              v-if="$store.state.role ==='SUPERADMIN'"
                               prepend-icon="mdi-city"
                               :items="roles"
                               v-model="data.role_id"
@@ -149,6 +150,7 @@ export default {
   mounted: async function () {
     const regionResponse = await axios.get('region/get/'+this.$store.state.regionid, {headers: { 'authorization': this.token }})
     this.region = regionResponse.data
+
     const roleResponse = await axios.get('role/get',{headers: { 'authorization': this.token }})
     this.roles = roleResponse.data
     },
@@ -156,10 +158,10 @@ export default {
   methods:{
     //https://webdevchallenges.com/persist-access-token-with-vue-js   //  FOR FULL LOGIN URL
     submit(){
-      if (this.data.district_id===''){this.data.district_id=null}
-      if (this.data.city_id===''){this.data.city_id=null}
-      console.log(this.data)
-      let response =  axios.post('auth/register',this.data,{headers: { 'authorization': this.token }});
+      if (this.data.district_id===''){this.data.district_id=null, this.data.role_id=null}
+      if (this.data.city_id===''){this.data.city_id=null, this.data.role_id=null}
+
+      axios.post('auth/register',this.data,{headers: { 'authorization': this.token }});
       this.data=''
     },
 
