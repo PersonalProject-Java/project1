@@ -55,7 +55,8 @@ export default {
         Orders:'T/R',
         Fullname:'To\'liq ismi',
         Newpassword:'Yangi parol kiriting',
-        Username:'Username'
+        Username:'Username',
+        BirthDay:'Tug\'ilgan sanasi'
 
 
     },
@@ -115,7 +116,8 @@ export default {
         Orders:'№',
         Fullname:'Полное имя',
         Newpassword:'Введите новый пароль',
-        Username:'Имя пользователя'
+        Username:'Имя пользователя',
+        BirthDay:'Дата рождения'
 
     },
     ўз:{
@@ -174,7 +176,8 @@ export default {
         Orders:'№',
         Fullname:'Тўлиқ исми',
         Newpassword:'Янги парол киритинг',
-        Username:'Фойдаланувчи номи'
+        Username:'Фойдаланувчи номи',
+        BirthDay:'Туғилган санаси'
     }
 
 }

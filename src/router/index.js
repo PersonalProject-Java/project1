@@ -17,6 +17,7 @@ const routes = [
   {path: '/personalforms',name: 'personalforms',component: ()=> import('../views/PersonalForms.vue')},
   {path: '/dr',name: 'dr',component: ()=> import('../views/Dr.vue')},
   {path: '/yd',name: 'yd',component: ()=> import('../views/Yd.vue')},
+  {path: '/secondwar',name: 'secondwar',component: ()=> import('../views/SecondWar.vue')},
   { path: '/district', name: 'district', component: () => import(/* webpackChunkName: "about" */ '../views/MyDistrict.vue')},
   { path: '/users', name: 'users', component: () => import(/* webpackChunkName: "about" */ '../views/MyUsers.vue')}
 ]

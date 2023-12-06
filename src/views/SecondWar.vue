@@ -986,7 +986,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 export default {
-  name:'personalforms',
+  name:'secondwar',
   components:{
   },
   data(){ return{
@@ -1225,6 +1225,7 @@ export default {
       }))
      this.exportToExcel(excelData, 'Afg\'on_Ishtirokchilari');
     },
+
     exportToExcel(data, filename) {
       const worksheet = utils.json_to_sheet(data);
       const workbook = XLSX.utils.book_new();
@@ -1234,7 +1235,7 @@ export default {
 
 
     async nextperson() {
-      const response = await axios.get('personal/get', {
+      const response = await axios.get('second_war/get', {
         params: {page: this.page-1,text:this.search},
         headers: {'authorization': this.token}
       })
@@ -1280,7 +1281,7 @@ export default {
     },
 
     async deleteItemConfirm() {
-      const districtResponse = await axios.delete('personal/delete/'+this.deleteId, {headers: {'authorization': this.token}})
+      const districtResponse = await axios.delete('second_war/delete/'+this.deleteId, {headers: {'authorization': this.token}})
       this.desserts.splice(this.editedIndex, 1)
       this.closeDelete()
     },
@@ -1327,7 +1328,7 @@ export default {
         }
 
 
-        await axios.put('personal/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
+        await axios.put('second_war/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
         this.close()
         this.nextperson()
@@ -1336,7 +1337,7 @@ export default {
               if (this.editedItem.pnfl.length<14){
            alert("Siz ma'lumotlarni to'ldirmadingiz")
          }else {
-       await axios.post('personal/add', this.editedItem, {headers: {'authorization': this.token}})
+       await axios.post('second_war/add', this.editedItem, {headers: {'authorization': this.token}})
        this.close()
        this.nextperson()
       }

@@ -100,6 +100,8 @@
           {icon: 'fa fa-users', text: 'Afghan', path: '/personalforms'},
           {icon: 'fas fa-people-carry', text: 'AES', path: '/dr'},
           {icon: 'fas fa-bomb', text: 'Yadro', path: '/yd'},
+          {icon: 'fas fa-medal', text: 'SecondWar', path: '/secondwar'},
+          {icon: 'fas fa-user-injured', text: 'SecondWar', path: '/secondwar'},
 
         ],
       users:[{icon: 'fas fa-users-cog', text: 'Users', path: '/users'}],
