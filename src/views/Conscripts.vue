@@ -17,7 +17,7 @@
               :headers="headers"
               :items="ordersWithIndex"
               :items-per-page="itemsPerPage"
-              item-key="desserts.index"
+              item-key="conscripts.index"
               single-expand
               class="elevation-1"
               :hide-default-footer="true"
@@ -41,7 +41,7 @@
                      vertical
                  ></v-divider>
                  <br>
-                 <v-icon class="excel" color="#8AD86E"  @click="exportDessertsToExcel(page)">fa-thin fa-file-excel</v-icon>
+                 <v-icon class="excel" color="#8AD86E"  @click="exportconscriptsToExcel(page)">fa-thin fa-file-excel</v-icon>
                  <v-divider
                      class="mx-4"
                      inset
@@ -986,7 +986,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 export default {
-  name:'personalforms',
+  name:'Conscripts',
   components:{
   },
   data(){ return{
@@ -1033,37 +1033,37 @@ export default {
       { text: this.$t('PNFL'), value: 'pnfl' },
       { text: this.$t('Seree'), value: 'serePassport' },
       { text: this.$t('Number'), value: 'numberPassport' },
+      // { text: 'floor', value: 'floor.name' },
       { text: this.$t('BirthDay'), value: 'birthDay' },
       { text: this.$t('Region'), value: 'region.name' },
       { text: this.$t('City'), value: 'city.name' },
       { text: this.$t('Districts'), value: 'district.name' },
-      /*    { text: 'Seree', value: 'seree' },
-            { text: 'floor', value: 'floor.name' },
-            { text: 'number', value: 'number' },
-            { text: 'DateEntry', value: 'dateEntry' },
-            { text: 'whoGive', value: 'whoGive' },
-            { text: 'datePassport', value: 'datePassport' },
-            { text: 'whoGive2', value: 'whoGive2' },
-            { text: this.$t('Nationality'), value: 'nationality.name' },
-            { text: 'BirthPlace', value: 'birthPlace' },
-            { text: 'RegisteredAllTime', value: 'registeredAllTime' },
-            { text: 'neighborhood', value: 'neighborhood' },
-            { text: 'educational', value: 'educational.name' },
-            { text: 'Institution', value: 'institution' },
-            { text: 'Specialty', value: 'specialty' },
-            { text: 'WorkPlace', value: 'workPlace' },
-            { text: 'Position', value: 'position' },
-            { text: 'FamilySituation', value: 'familySituation' },
-            { text: 'Conviction', value: 'conviction' },
-            { text: 'SocialBackground', value: 'socialBackground' },
-            { text: 'removed', value: 'removed' },
-            { text: 'Mukofot', value: 'mukofot' },
-            { text: 'injury', value: 'injury' },
-            { text: 'Characters', value: 'characters' },
-            { text: 'photo', value: 'photo' },*/
+/*    { text: 'Seree', value: 'seree' },
+      { text: 'number', value: 'number' },
+      { text: 'DateEntry', value: 'dateEntry' },
+      { text: 'whoGive', value: 'whoGive' },
+      { text: 'datePassport', value: 'datePassport' },
+      { text: 'whoGive2', value: 'whoGive2' },
+      { text: this.$t('Nationality'), value: 'nationality.name' },
+      { text: 'BirthPlace', value: 'birthPlace' },
+      { text: 'RegisteredAllTime', value: 'registeredAllTime' },
+      { text: 'neighborhood', value: 'neighborhood' },
+      { text: 'educational', value: 'educational.name' },
+      { text: 'Institution', value: 'institution' },
+      { text: 'Specialty', value: 'specialty' },
+      { text: 'WorkPlace', value: 'workPlace' },
+      { text: 'Position', value: 'position' },
+      { text: 'FamilySituation', value: 'familySituation' },
+      { text: 'Conviction', value: 'conviction' },
+      { text: 'SocialBackground', value: 'socialBackground' },
+      { text: 'removed', value: 'removed' },
+      { text: 'Mukofot', value: 'mukofot' },
+      { text: 'injury', value: 'injury' },
+      { text: 'Characters', value: 'characters' },
+      { text: 'photo', value: 'photo' },*/
       { text: this.$t('Actions'), value: 'actions', sortable: false },
     ],
-    desserts: [],
+    conscripts: [],
     editedIndex: -1,
     editedItem: {
       sureName: '',
@@ -1136,7 +1136,7 @@ export default {
   computed: {
 
     ordersWithIndex(){
-      return this.desserts.map(
+      return this.conscripts.map(
           (items, index) => ({
             ...items,
             index: (this.page-1)*10 + index + 1
@@ -1145,7 +1145,7 @@ export default {
 
 
     totalRecords() {
-      return this.desserts.length
+      return this.conscripts.length
     },
 
     pageCount() {
@@ -1185,7 +1185,7 @@ export default {
     exportPDF(page) {
       const doc = new jsPDF('landScape','pt', 'a4');
       const headers = ["T/R",'Familyasi','Ismi','OtasiningIsmi','PNFL','SereePassport','Passport_raqami'];
-      const tableData = this.desserts.map((dessert, index) => {
+      const tableData = this.conscripts.map((dessert, index) => {
         const transformedRow = [
           (page - 1) * 10 + index + 1,
           dessert.sureName,
@@ -1208,9 +1208,9 @@ export default {
 
 
 
-    exportDessertsToExcel(page) {
+    exportconscriptsToExcel(page) {
       let count=(page-1)*10 + 1;
-      const excelData =this.desserts.map(disserts=>({
+      const excelData =this.conscripts.map(disserts=>({
         "№":count++,
         Familyasi: disserts.sureName,
         Ismi: disserts.name,
@@ -1225,6 +1225,7 @@ export default {
       }))
      this.exportToExcel(excelData, 'Afg\'on_Ishtirokchilari');
     },
+
     exportToExcel(data, filename) {
       const worksheet = utils.json_to_sheet(data);
       const workbook = XLSX.utils.book_new();
@@ -1234,17 +1235,17 @@ export default {
 
 
     async nextperson() {
-      const response = await axios.get('personal/get', {
+      const response = await axios.get('conscripts/get', {
         params: {page: this.page-1,text:this.search},
         headers: {'authorization': this.token}
       })
       this.totalElement = response.data.totalElements
       if (this.search!== '' && this.search.length > 3 && response.data.length!==0){
-        this.desserts=response.data.content
+        this.conscripts=response.data.content
         this.totalPages = response.data.totalPages
         this.loading=false
       }else {
-        this.desserts = response.data.content
+        this.conscripts = response.data.content
         this.totalPages = response.data.totalPages
         this.loading=false
             }
@@ -1260,28 +1261,31 @@ export default {
           },
 
     editItem(item) {
-      this.desserts.push(item)
-       this.editedIndex = this.desserts.indexOf(item)
-       this.editedItem = Object.assign({}, item)
-       this.dialog = true
+      this.conscripts.push(item)
+      this.editedIndex = this.conscripts.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
      },
 
+
+
+
     viewItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
+      this.editedIndex = this.conscripts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.view = true
     },
 
     deleteItem (item) {
       this.deleteId = item.id
-      this.editedIndex = this.desserts.indexOf(item)
+      this.editedIndex = this.conscripts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     async deleteItemConfirm() {
-      const districtResponse = await axios.delete('personal/delete/'+this.deleteId, {headers: {'authorization': this.token}})
-      this.desserts.splice(this.editedIndex, 1)
+      const districtResponse = await axios.delete('conscripts/delete/'+this.deleteId, {headers: {'authorization': this.token}})
+      this.conscripts.splice(this.editedIndex, 1)
       this.closeDelete()
     },
 
@@ -1303,9 +1307,7 @@ export default {
     },
 
     async save() {
-      console.log(this.editedItem)
-
-      if (this.editedIndex > -1) {
+        if (this.editedIndex > -1) {
 
         if (typeof this.editedItem.region === 'object' && this.editedItem.region !== null) {
           this.editedItem.region = this.editedItem.region.id;
@@ -1327,8 +1329,8 @@ export default {
         }
 
 
-        await axios.put('personal/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
+        await axios.put('conscripts/edit/'+this.editedItem.id,  this.editedItem, {headers: {'authorization': this.token}})
+        Object.assign(this.conscripts[this.editedIndex], this.editedItem)
         this.close()
         this.nextperson()
        }
@@ -1336,7 +1338,7 @@ export default {
               if (this.editedItem.pnfl.length<14){
            alert("Siz ma'lumotlarni to'ldirmadingiz")
          }else {
-       await axios.post('personal/add', this.editedItem, {headers: {'authorization': this.token}})
+       await axios.post('conscripts/add', this.editedItem, {headers: {'authorization': this.token}})
        this.close()
        this.nextperson()
       }

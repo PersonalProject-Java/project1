@@ -8,9 +8,7 @@
 </template>
 
 <script>
-// import DataTable from "@/views/MyCity.vue";
 import SideBar from "@/components/SideBar";
-// import MyFooter from "@/components/MyFooter";
 import axios from "axios";
 export default {
   name: 'App',
