@@ -14,6 +14,7 @@
         </v-card-title>
 
             <v-data-table
+
               :headers="headers"
               :items="ordersWithIndex"
               :items-per-page="itemsPerPage"

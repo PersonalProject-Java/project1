@@ -1,7 +1,7 @@
 <template xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
   <div>
 <v-app>
-    <MyNavbar v-if="$store.state.token"/>
+    <MyNavbar />
     <v-navigation-drawer
         app
         permanent
@@ -13,7 +13,6 @@
         class="mt-10"
         v-if="$store.state.token">
       <v-list>
-
         <v-list-item class="px-2">
           <v-list-item-avatar>
             <v-img src="../assets/admin2.png"></v-img>
@@ -21,10 +20,6 @@
 
           <v-list-item-title class="mt-1">{{$store.state.role}}</v-list-item-title>
         </v-list-item>
-
-
-
-
         <v-list-item-group v-for="item in items" :key="item.root" v-model="selectedItem" color="white" >
         <v-list-item v-if="!item.subLinks" :to="item.path" >
 <!--          <v-list-item-icon>-->
