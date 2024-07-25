@@ -89,6 +89,7 @@ name:"MyLogin",
         methods:{
                       //https://webdevchallenges.com/persist-access-token-with-vue-js   //  FOR FULL LOGIN URL
            submit () {
+             console.log(process.env.VUE_APP_ROOT_API);
               sessionStorage.clear();
               axios.post('auth/login', this.data).then(response =>{
              if (response.data){

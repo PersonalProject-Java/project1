@@ -1,7 +1,7 @@
 import axios from "axios";
 
-axios.defaults.baseURL= 'http://localhost:8085/api/';
-
+// axios.defaults.baseURL= 'http://localhost:8085/api/';
+axios.defaults.baseURL = process.env.VUE_APP_ROOT_API;
 let refresh = false;
 
 axios.interceptors.response.use(resp=>resp,async error => {

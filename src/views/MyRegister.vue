@@ -56,6 +56,7 @@
                           ></v-select>
 
                           <v-select
+                              clearable
                               prepend-icon="mdi-domain"
                               :items="city"
                               item-text="name"
@@ -66,6 +67,7 @@
                               single-line
                           ></v-select>
                           <v-select
+                              clearable
                               prepend-icon="mdi-domain"
                               :items="district"
                               item-text="name"
@@ -158,9 +160,10 @@ export default {
   methods:{
     //https://webdevchallenges.com/persist-access-token-with-vue-js   //  FOR FULL LOGIN URL
     submit(){
-      if (this.data.district_id===''){this.data.district_id=null, this.data.role_id=null}
-      if (this.data.city_id===''){this.data.city_id=null, this.data.role_id=null}
+      if (this.data.district_id===''){this.data.district_id=null}
+      if (this.data.city_id===''){this.data.city_id=null}
 
+      console.log(this.data)
       axios.post('auth/register',this.data,{headers: { 'authorization': this.token }});
       this.data=''
     },
